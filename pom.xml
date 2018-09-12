@@ -3,12 +3,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>Grupo-A-022018-Auction-Back</groupId>
-	<artifactId>Grupo-A-022018-Auction-Back</artifactId>
+	<groupId>Grupo-A-022018-entity.Auction-Back</groupId>
+	<artifactId>Grupo-A-022018-entity.Auction-Back</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>Grupo-A-022018-Auction-Back</name>
+	<name>Grupo-A-022018-entity.Auction-Back</name>
 	<description>Demo project for Spring Boot</description>
 
 	<parent>
