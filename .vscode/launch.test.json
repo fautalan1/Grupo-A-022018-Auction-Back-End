@@ -1,0 +1,30 @@
+{
+    "run": {
+        "default": "",
+        "items": [
+            {
+                "name": "Grupo-A-022018-entity.Auction-Back",
+                "projectName": "Grupo-A-022018-entity.Auction-Back",
+                "workingDirectory": "/home/gpasquale/Documents/Grupo-A-022018-Auction-Back-End",
+                "args": [],
+                "vmargs": [],
+                "env": {},
+                "preLaunchTask": ""
+            }
+        ]
+    },
+    "debug": {
+        "default": "",
+        "items": [
+            {
+                "name": "Grupo-A-022018-entity.Auction-Back",
+                "projectName": "Grupo-A-022018-entity.Auction-Back",
+                "workingDirectory": "/home/gpasquale/Documents/Grupo-A-022018-Auction-Back-End",
+                "args": [],
+                "vmargs": [],
+                "env": {},
+                "preLaunchTask": ""
+            }
+        ]
+    }
+}
