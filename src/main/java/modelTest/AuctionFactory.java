@@ -4,9 +4,9 @@ import entity.Auction;
 
 import java.util.Date;
 
-public class AuctionFactory {
+class AuctionFactory {
     
-    public static Auction anyAuction() {
+    static Auction anyAuction() {
         return new Auction(new Date(), new Date());
     }
 

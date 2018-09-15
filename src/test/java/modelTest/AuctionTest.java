@@ -1,53 +1,71 @@
 package modelTest;
 
 import entity.Auction;
+import entity.User;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
-import java.util.Calendar;
 import java.util.Date;
+
+import static org.junit.Assert.*;
 
 public class AuctionTest {
 
-    @Test public void anAuctionWithAPublicationDateOfOneDayLaterThanTheCurrentOneShouldHaveStatusNEW(){
-        
-        Calendar publicationDateOneDayLaterThanTheCurrent = Calendar.getInstance();
-        publicationDateOneDayLaterThanTheCurrent.setTime(new Date());
-        publicationDateOneDayLaterThanTheCurrent.add(Calendar.DAY_OF_MONTH, 1);
+    @Test public void anAuctionWithAPublicationDateOfOneHourAfterThanTheCurrentOneShouldHaveStatusNew(){
 
         Auction auction = AuctionFactory.anyAuction();
-        auction.setPublicationDate(publicationDateOneDayLaterThanTheCurrent.getTime());
+        auction.setPublicationDate(DateFactory.oneHourAfterTheCurrent());
 
         assertEquals(AuctionStatus.NEW, auction.state());
     }
 
-    @Test public void anAuctionWithAPublicationDateOfOneHourBeforeTheCurrentOneAndAnFinishDateOfOneHourAfterTheCurrentOneShouldHaveStatusIN_PROGRESS(){
+    @Test public void anAuctionWithAPublicationDateOfOneHourBeforeTheCurrentOneAndAnFinishDateOfOneHourAfterTheCurrentOneShouldHaveStatusInProgress(){
         
-        Calendar publicationDateOneHourBeforeTheCurrent = Calendar.getInstance();
-        publicationDateOneHourBeforeTheCurrent.setTime(new Date());
-        publicationDateOneHourBeforeTheCurrent.add(Calendar.HOUR, -1);
-
-        Calendar finishDateOneHourAfterTheCurrent = Calendar.getInstance();
-        finishDateOneHourAfterTheCurrent.setTime(new Date());
-        finishDateOneHourAfterTheCurrent.add(Calendar.HOUR, 1);
-
         Auction auction = AuctionFactory.anyAuction();
-        auction.setPublicationDate(publicationDateOneHourBeforeTheCurrent.getTime());
-        auction.setFinishDate(finishDateOneHourAfterTheCurrent.getTime());
+        auction.setPublicationDate(DateFactory.oneHourBeforeTheCurrent());
+        auction.setFinishDate(DateFactory.oneHourAfterTheCurrent());
 
         assertEquals(AuctionStatus.IN_PROGRESS, auction.state());
     }
 
-    @Test public void anAuctionWithAnFinishDateOfOneHourBeforeToTheCurrentOneShouldHaveStatusCOMPLETED(){
-
-        Calendar finishDateOneHourBeforeToTheCurrent = Calendar.getInstance();
-        finishDateOneHourBeforeToTheCurrent.setTime(new Date());
-        finishDateOneHourBeforeToTheCurrent.add(Calendar.HOUR, -1);
+    @Test public void anAuctionWithAnFinishDateOfOneHourBeforeToTheCurrentOneShouldHaveStatusCompleted(){
 
         Auction auction = AuctionFactory.anyAuction();
-        auction.setFinishDate(finishDateOneHourBeforeToTheCurrent.getTime());
+        auction.setFinishDate(DateFactory.oneHourBeforeTheCurrent());
 
         assertEquals(AuctionStatus.COMPLETED, auction.state());
     }
 
+    @Test public void anAuctionShouldHaveAnOfferWhenAnOfferIsMade(){
+
+        Auction auction = AuctionFactory.anyAuction();
+        User user = UserFactory.anyUser();
+
+        auction.offer(user.getEmail());
+
+        assertEquals(1, auction.getOffers().size());
+    }
+
+    @Test public void shouldBeFivePercentHigherThanThePriceOfAnAuctionWhenAnOfferIsMade(){
+
+        Auction auction = AuctionFactory.anyAuction();
+        auction.setPrice(100);
+        User user = UserFactory.anyUser();
+
+        auction.offer(user.getEmail());
+
+        assertEquals(105, auction.getPrice());
+    }
+
+    @Test public void theAuctionShouldBeExtendedFiveMoreMinutesWhenAnOfferIsMadeWithinTheLastFiveMinutesBeforeTheEndOfTheAuction(){
+
+        Auction auction = AuctionFactory.anyAuction();
+        auction.setFinishDate(DateFactory.oneMinuteAfterTheCurrent());
+        Date oldFinishDate = auction.getFinishDate();
+        Date finishDate = DateFactory.addFiveMinutes(oldFinishDate);
+        User user = UserFactory.anyUser();
+
+        auction.offer(user.getEmail());
+
+        assertEquals(finishDate, auction.getFinishDate());
+    }
 }

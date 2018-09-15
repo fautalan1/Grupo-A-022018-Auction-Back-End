@@ -10,7 +10,7 @@ public class AuctionStateNew implements AuctionState {
     @Override
     public boolean isTheState(Auction auction) {
         Date now = Calendar.getInstance().getTime();
-        return now.compareTo(auction.publicationDate) < 0;
+        return now.compareTo(auction.getPublicationDate()) < 0;
     }
 
     @Override
