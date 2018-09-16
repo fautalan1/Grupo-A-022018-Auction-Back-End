@@ -1,7 +1,11 @@
 package modelTest;
 
 import entity.Auction;
-import entity.User;
+import model.AuctionFactory;
+import model.AuctionStatus;
+import model.DateFactory;
+import model.UserFactory;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Date;
@@ -15,7 +19,7 @@ public class AuctionTest {
         Auction auction = AuctionFactory.anyAuction();
         auction.setPublicationDate(DateFactory.oneHourAfterTheCurrent());
 
-        assertEquals(AuctionStatus.NEW, auction.state());
+        Assert.assertEquals(AuctionStatus.NEW, auction.state());
     }
 
     @Test public void anAuctionWithAPublicationDateOfOneHourBeforeTheCurrentOneAndAnFinishDateOfOneHourAfterTheCurrentOneShouldHaveStatusInProgress(){
@@ -35,37 +39,74 @@ public class AuctionTest {
         assertEquals(AuctionStatus.COMPLETED, auction.state());
     }
 
-    @Test public void anAuctionShouldHaveAnOfferWhenAnOfferIsMade(){
-
-        Auction auction = AuctionFactory.anyAuction();
-        User user = UserFactory.anyUser();
-
-        auction.offer(user.getEmail());
-
-        assertEquals(1, auction.getOffers().size());
-    }
-
     @Test public void shouldBeFivePercentHigherThanThePriceOfAnAuctionWhenAnOfferIsMade(){
 
         Auction auction = AuctionFactory.anyAuction();
         auction.setPrice(100);
-        User user = UserFactory.anyUser();
 
-        auction.offer(user.getEmail());
+        auction.offer();
 
         assertEquals(105, auction.getPrice());
     }
 
-    @Test public void theAuctionShouldBeExtendedFiveMoreMinutesWhenAnOfferIsMadeWithinTheLastFiveMinutesBeforeTheEndOfTheAuction(){
+    @Test public void anAuctionShouldBeExtendedFiveMoreMinutesWhenAnOfferIsMadeWithinTheLastFiveMinutesBeforeTheEndOfTheAuction(){
 
         Auction auction = AuctionFactory.anyAuction();
         auction.setFinishDate(DateFactory.oneMinuteAfterTheCurrent());
         Date oldFinishDate = auction.getFinishDate();
         Date finishDate = DateFactory.addFiveMinutes(oldFinishDate);
-        User user = UserFactory.anyUser();
 
-        auction.offer(user.getEmail());
+        auction.offer();
 
         assertEquals(finishDate, auction.getFinishDate());
     }
+
+    @Test public void anAuctionShouldNotBeExtendedWhenAnOfferWasMadeMoreThanFiveMinutesBeforeTheEndOfTheAuction(){
+
+        Auction auction = AuctionFactory.anyAuction();
+        auction.setFinishDate(DateFactory.tenMinutesBeforeTheCurrent());
+        Date finishDate = auction.getFinishDate();
+
+        auction.offer();
+
+        assertEquals(finishDate, auction.getFinishDate());
+    }
+
+    @Test public void anAuctionShouldNotBeExtendedWhenAnOfferIsMadeWithinTheLastFiveMinutesBeforeTheEndButItExceedsFortyEightHoursOfItsInitialFinishDate(){
+
+        Auction auction = AuctionFactory.anyAuction();
+        auction.setInitialFinishDate(DateFactory.fortyEightHoursBeforeTheCurrent());
+        auction.setFinishDate(DateFactory.oneMinuteAfterTheCurrent());
+        Date finishDate = auction.getFinishDate();
+
+        auction.offer();
+
+        assertEquals(finishDate, auction.getFinishDate());
+    }
+
+    @Test public void shouldReturnTrueWhenAnAutomaticOfferWasMadeAndThePriceIsWithinTheMaximumValue(){
+
+        Auction auction = AuctionFactory.anyAuction();
+        auction.setPrice(100);
+        auction.automaticOffer(UserFactory.anyEmail(), 105);
+
+        assertTrue(auction.thereIsToDoTheAutomaticOffer());
+    }
+
+    @Test public void shouldReturnFalseWhenAnAutomaticOfferWasNotMade(){
+
+        Auction auction = AuctionFactory.anyAuction();
+
+        assertFalse(auction.thereIsToDoTheAutomaticOffer());
+    }
+
+    @Test public void shouldReturnFalseWhenAnAutomaticOfferWasMadeButThePriceIsNotWithinTheMaximumValue(){
+
+        Auction auction = AuctionFactory.anyAuction();
+        auction.setPrice(100);
+        auction.automaticOffer(UserFactory.anyEmail(), 102);
+
+        assertFalse(auction.thereIsToDoTheAutomaticOffer());
+    }
+
 }

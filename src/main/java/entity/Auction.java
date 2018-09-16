@@ -1,26 +1,25 @@
 package entity;
 
-import modelTest.AuctionStatus;
-import modelTest.DateFactory;
-import modelTest.StatusProviderOfAnAuction;
-
-import java.util.ArrayList;
+import model.AuctionStatus;
+import model.DateFactory;
+import model.StatusProviderOfAnAuction;
 import java.util.Date;
-import java.util.List;
 
 public class Auction {
 
-    private long id;
     private Date publicationDate;
     private Date finishDate;
+    private Date initialFinishDate;
     private long price;
-    private List<Offer> offers;
-    
+    private String automaticOfferUser;
+    private long automaticOfferAmount;
+
     public Auction(Date aPublicationDate, Date aFinishDate) {
         super();
         setPublicationDate(aPublicationDate);
         setFinishDate(aFinishDate);
-        setOffers(new ArrayList<>());
+        setInitialFinishDate(aFinishDate);
+        setAutomaticOfferAmount(0);
     }
 
     public void setPublicationDate(Date aDate) {
@@ -44,29 +43,17 @@ public class Auction {
         return finishDate;
     }
 
-    private void setOffers(List<Offer> offers) {
-        this.offers = offers;
-    }
-
-    public List<Offer> getOffers() {
-        return offers;
-    }
-
-    private void addOffer(Offer offer) {
-        this.offers.add(offer);
-    }
-
-    public void offer(String email) {
-        Offer newOffer = new Offer(email, this.id);
-        addOffer(newOffer);
-        long newPrice = fivePercentMoreThanTheCurrentPrice();
-        setPrice(newPrice);
-        if(theAuctionMustBeExtended()) {
-            setFinishDate(DateFactory.addFiveMinutes(this.finishDate));
-        }
-    }
-
     private boolean theAuctionMustBeExtended() {
+        return theOfferWasMadeWithinTheLastFiveMinutes() && !exceededFortyEightHours();
+    }
+
+    private boolean exceededFortyEightHours() {
+        Date fiveMinutesAfterTheFinishDate = DateFactory.addFiveMinutes(this.finishDate);
+        Date initialFinishDatePlusFortyEightHours = DateFactory.addFortyEightHours(this.initialFinishDate);
+        return fiveMinutesAfterTheFinishDate.compareTo(initialFinishDatePlusFortyEightHours) > 0;
+    }
+
+    private boolean theOfferWasMadeWithinTheLastFiveMinutes() {
         Date fiveMinutesBeforeTheCurrent = DateFactory.fiveMinutesBeforeTheCurrent();
         return fiveMinutesBeforeTheCurrent.compareTo(this.finishDate) < 0;
     }
@@ -81,5 +68,35 @@ public class Auction {
 
     public void setPrice(long price) {
         this.price = price;
+    }
+
+    public void offer() {
+        long newPrice = fivePercentMoreThanTheCurrentPrice();
+        setPrice(newPrice);
+        if(theAuctionMustBeExtended()) {
+            setFinishDate(DateFactory.addFiveMinutes(this.finishDate));
+        }
+    }
+
+    public void automaticOffer(String email, long amount) {
+        setAutomaticOfferUser(email);
+        setAutomaticOfferAmount(amount);
+    }
+
+    public boolean thereIsToDoTheAutomaticOffer() {
+        long newPrice = fivePercentMoreThanTheCurrentPrice();
+        return this.automaticOfferAmount != 0 && newPrice <= this.automaticOfferAmount;
+    }
+
+    public void setInitialFinishDate(Date initialFinishDate) {
+        this.initialFinishDate = initialFinishDate;
+    }
+
+    private void setAutomaticOfferAmount(long automaticOfferAmount) {
+        this.automaticOfferAmount = automaticOfferAmount;
+    }
+
+    private void setAutomaticOfferUser(String automaticOfferUser) {
+        this.automaticOfferUser = automaticOfferUser;
     }
 }

@@ -1,4 +1,4 @@
-package modelTest;
+package model;
 
 import entity.Auction;
 
@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 public class StatusProviderOfAnAuction {
 
-    List<AuctionState> auctionStates;
+    private List<AuctionState> auctionStates;
     
     public StatusProviderOfAnAuction() {
         super();

@@ -1,14 +1,13 @@
-package modelTest;
+package model;
 
 import entity.Auction;
 
 import java.util.Date;
 
-class AuctionFactory {
-    
-    static Auction anyAuction() {
+public class AuctionFactory {
+
+    public static Auction anyAuction() {
         return new Auction(new Date(), new Date());
     }
-
 
 }
