@@ -10,4 +10,6 @@ public class AuctionFactory {
         return new Auction(new Date(), new Date());
     }
 
+
+
 }

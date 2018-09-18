@@ -8,6 +8,7 @@ import model.UserFactory;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import static org.junit.Assert.*;
@@ -108,5 +109,34 @@ public class AuctionTest {
 
         assertFalse(auction.thereIsToDoTheAutomaticOffer());
     }
+
+
+    @Test public void anAuctionIsSetAsAutomatic(){
+        Auction auction = AuctionFactory.anyAuction();
+        auction.setAutomaticOfferUser("Juan");
+        assertTrue(auction.thereIsAutomaticUser());
+    }
+
+    @Test public void anAuctionDoesNotSetItAsAutomatic(){
+        Auction auction = AuctionFactory.anyAuction();
+        assertFalse(auction.thereIsAutomaticUser());
+    }
+
+
+    @Test public void anAuctionKnowsIfTerm(){
+        Auction auction = AuctionFactory.anyAuction();
+        Date time = Calendar.getInstance().getTime();
+        auction.setFinishDate(time);
+        assertTrue(auction.isFinished());
+    }
+
+    @Test public void anAuctionDoesNotKnowsIfTerm(){
+        Auction auction = AuctionFactory.anyAuction();
+        Date time = Calendar.getInstance().getTime();
+        auction.setFinishDate(DateFactory.addFiveMinutes(time));
+        assertFalse(auction.isFinished());
+    }
+
+
 
 }

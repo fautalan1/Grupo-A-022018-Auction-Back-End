@@ -3,6 +3,8 @@ package entity;
 import model.AuctionStatus;
 import model.DateFactory;
 import model.StatusProviderOfAnAuction;
+import org.springframework.util.StringUtils;
+
 import java.util.Date;
 
 public class Auction {
@@ -88,15 +90,29 @@ public class Auction {
         return this.automaticOfferAmount != 0 && newPrice <= this.automaticOfferAmount;
     }
 
+
+
     public void setInitialFinishDate(Date initialFinishDate) {
         this.initialFinishDate = initialFinishDate;
     }
 
-    private void setAutomaticOfferAmount(long automaticOfferAmount) {
+    public void setAutomaticOfferAmount(long automaticOfferAmount) {
         this.automaticOfferAmount = automaticOfferAmount;
     }
 
-    private void setAutomaticOfferUser(String automaticOfferUser) {
+
+
+    public void setAutomaticOfferUser(String automaticOfferUser) {
         this.automaticOfferUser = automaticOfferUser;
     }
+
+    public boolean thereIsAutomaticUser() {
+      return !StringUtils.isEmpty(automaticOfferUser);
+    }
+
+    public boolean isFinished(){
+
+        return this.state().equals(AuctionStatus.COMPLETED);
+    }
+
 }
