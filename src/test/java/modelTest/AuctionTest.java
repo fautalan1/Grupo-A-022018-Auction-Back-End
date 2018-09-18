@@ -6,12 +6,18 @@ import model.AuctionStatus;
 import model.DateFactory;
 import model.UserFactory;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
+import javax.validation.constraints.AssertTrue;
 import java.util.Calendar;
 import java.util.Date;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.when;
+
 
 public class AuctionTest {
 
@@ -125,17 +131,42 @@ public class AuctionTest {
 
     @Test public void anAuctionKnowsIfTerm(){
         Auction auction = AuctionFactory.anyAuction();
-        Date time = Calendar.getInstance().getTime();
-        auction.setFinishDate(time);
+        auction.setFinishDate(DateFactory.oneHourBeforeTheCurrent());
         assertTrue(auction.isFinished());
     }
 
-    @Test public void anAuctionDoesNotKnowsIfTerm(){
+
+    @Test public void anAuctionKnowsIfIDoNotFinish(){
+        Auction auction = AuctionFactory.anyAuction();
+        Date time = Calendar.getInstance().getTime();
+
+        auction.setFinishDate(DateFactory.addFiveMinutes(time));
+
+        assertFalse(auction.isFinished());
+    }
+
+    @Test public void anAuctionKnowsThatTheBidderIsTheAuthor(){
+        Auction auction = AuctionFactory.anyAuction();
+        auction.setAuthor("Pepita");
+
+        assertTrue(auction.isAuthor("pepita"));
+    }
+
+
+    @Test public void anAuctionKnowsThatTheBidderIsNotTheAuthor(){
+        Auction auction = AuctionFactory.anyAuction();
+        auction.setAuthor("Pepon");
+
+        assertFalse(auction.isAuthor("pepita"));
+    }
+
+    @Test public void  anAuctionIsInProgress(){
         Auction auction = AuctionFactory.anyAuction();
         Date time = Calendar.getInstance().getTime();
         auction.setFinishDate(DateFactory.addFiveMinutes(time));
-        assertFalse(auction.isFinished());
+        assertTrue(auction.isInProgress());
     }
+
 
 
 

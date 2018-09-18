@@ -9,6 +9,7 @@ import java.util.Date;
 
 public class Auction {
 
+    private String author;
     private Date publicationDate;
     private Date finishDate;
     private Date initialFinishDate;
@@ -16,12 +17,15 @@ public class Auction {
     private String automaticOfferUser;
     private long automaticOfferAmount;
 
+    final private StatusProviderOfAnAuction statusProvide= new StatusProviderOfAnAuction();
+
     public Auction(Date aPublicationDate, Date aFinishDate) {
         super();
         setPublicationDate(aPublicationDate);
         setFinishDate(aFinishDate);
         setInitialFinishDate(aFinishDate);
         setAutomaticOfferAmount(0);
+
     }
 
     public void setPublicationDate(Date aDate) {
@@ -32,9 +36,9 @@ public class Auction {
         this.finishDate = aDate;
     }
 
-    public AuctionStatus state() {
-        StatusProviderOfAnAuction statusProvider = new StatusProviderOfAnAuction();
-        return statusProvider.getState(this);
+    final public AuctionStatus state() {
+
+        return statusProvide.getState(this);
     }
 
     public Date getPublicationDate() {
@@ -43,6 +47,14 @@ public class Auction {
 
     public Date getFinishDate() {
         return finishDate;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     private boolean theAuctionMustBeExtended() {
@@ -114,5 +126,15 @@ public class Auction {
 
         return this.state().equals(AuctionStatus.COMPLETED);
     }
+
+    public boolean  isAuthor(String aBidder){
+      return  aBidder.equalsIgnoreCase(author);
+
+    }
+    public boolean isInProgress(){
+        return this.state().equals(AuctionStatus.IN_PROGRESS);
+    }
+
+
 
 }

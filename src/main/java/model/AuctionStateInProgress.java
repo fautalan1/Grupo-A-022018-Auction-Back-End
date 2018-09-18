@@ -10,7 +10,7 @@ public class AuctionStateInProgress implements AuctionState {
     @Override
     public boolean isTheState(Auction auction) {
         Date now = Calendar.getInstance().getTime();
-        return now.compareTo(auction.getPublicationDate()) > 0 && now.compareTo(auction.getFinishDate()) < 0;
+        return now.compareTo(auction.getPublicationDate()) >= 0 && now.compareTo(auction.getFinishDate()) <= 0;
     }
 
     @Override
