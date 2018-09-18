@@ -20,24 +20,22 @@ public class AuctionTest {
     @Test public void anAuctionWithAPublicationDateOfOneHourAfterThanTheCurrentOneShouldHaveStatusNew(){
 
         Auction auction = AuctionFactory.anyAuction();
-        auction.setPublicationDate(DateFactory.oneHourAfterTheCurrent());
-
+        auction.setPublicationDate(DateFactory.add(new Date(),Calendar.HOUR,1));
         Assert.assertEquals(AuctionStatus.NEW, auction.state());
     }
 
     @Test public void anAuctionWithAPublicationDateOfOneHourBeforeTheCurrentOneAndAnFinishDateOfOneHourAfterTheCurrentOneShouldHaveStatusInProgress(){
         
         Auction auction = AuctionFactory.anyAuction();
-        auction.setPublicationDate(DateFactory.oneHourBeforeTheCurrent());
-        auction.setFinishDate(DateFactory.oneHourAfterTheCurrent());
-
+        auction.setPublicationDate(DateFactory.add(new Date(),Calendar.HOUR,-1));
+        auction.setFinishDate(DateFactory.add(new Date(),Calendar.HOUR,1));
         assertEquals(AuctionStatus.IN_PROGRESS, auction.state());
     }
 
     @Test public void anAuctionWithAnFinishDateOfOneHourBeforeToTheCurrentOneShouldHaveStatusCompleted(){
 
         Auction auction = AuctionFactory.anyAuction();
-        auction.setFinishDate(DateFactory.oneHourBeforeTheCurrent());
+        auction.setFinishDate(DateFactory.add(new Date(),Calendar.HOUR,-1));
 
         assertEquals(AuctionStatus.COMPLETED, auction.state());
     }
@@ -55,9 +53,9 @@ public class AuctionTest {
     @Test public void anAuctionShouldBeExtendedFiveMoreMinutesWhenAnOfferIsMadeWithinTheLastFiveMinutesBeforeTheEndOfTheAuction(){
 
         Auction auction = AuctionFactory.anyAuction();
-        auction.setFinishDate(DateFactory.oneMinuteAfterTheCurrent());
+        auction.setFinishDate(DateFactory.add(new Date(),Calendar.MINUTE,1));
         Date oldFinishDate = auction.getFinishDate();
-        Date finishDate = DateFactory.addFiveMinutes(oldFinishDate);
+        Date finishDate = DateFactory.add(oldFinishDate,Calendar.MINUTE,5);
 
         auction.offer();
 
@@ -67,7 +65,7 @@ public class AuctionTest {
     @Test public void anAuctionShouldNotBeExtendedWhenAnOfferWasMadeMoreThanFiveMinutesBeforeTheEndOfTheAuction(){
 
         Auction auction = AuctionFactory.anyAuction();
-        auction.setFinishDate(DateFactory.tenMinutesBeforeTheCurrent());
+        auction.setFinishDate(DateFactory.add(new Date(),Calendar.MINUTE,-10));
         Date finishDate = auction.getFinishDate();
 
         auction.offer();
@@ -78,8 +76,8 @@ public class AuctionTest {
     @Test public void anAuctionShouldNotBeExtendedWhenAnOfferIsMadeWithinTheLastFiveMinutesBeforeTheEndButItExceedsFortyEightHoursOfItsInitialFinishDate(){
 
         Auction auction = AuctionFactory.anyAuction();
-        auction.setInitialFinishDate(DateFactory.fortyEightHoursBeforeTheCurrent());
-        auction.setFinishDate(DateFactory.oneMinuteAfterTheCurrent());
+        auction.setInitialFinishDate(DateFactory.add(new Date(),Calendar.DAY_OF_WEEK,-2));
+        auction.setFinishDate(DateFactory.add(new Date(),Calendar.MINUTE,-1));
         Date finishDate = auction.getFinishDate();
 
         auction.offer();
@@ -127,16 +125,15 @@ public class AuctionTest {
 
     @Test public void anAuctionKnowsIfTerm(){
         Auction auction = AuctionFactory.anyAuction();
-        auction.setFinishDate(DateFactory.oneHourBeforeTheCurrent());
+        auction.setFinishDate(DateFactory.add(new Date(),Calendar.HOUR,-1));
         assertTrue(auction.isFinished());
     }
 
 
     @Test public void anAuctionKnowsIfIDoNotFinish(){
         Auction auction = AuctionFactory.anyAuction();
-        Date time = Calendar.getInstance().getTime();
 
-        auction.setFinishDate(DateFactory.addFiveMinutes(time));
+        auction.setFinishDate(DateFactory.add(new Date(),Calendar.MINUTE,5));
 
         assertFalse(auction.isFinished());
     }
@@ -159,9 +156,10 @@ public class AuctionTest {
     @Test public void  anAuctionIsInProgress(){
         Auction auction = AuctionFactory.anyAuction();
         Date time = Calendar.getInstance().getTime();
-        auction.setFinishDate(DateFactory.addFiveMinutes(time));
+        auction.setFinishDate(DateFactory.add(time,Calendar.MINUTE,5));
         assertTrue(auction.isInProgress());
     }
+
 
 
 

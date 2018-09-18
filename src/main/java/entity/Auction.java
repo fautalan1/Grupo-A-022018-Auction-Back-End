@@ -5,6 +5,7 @@ import model.DateFactory;
 import model.StatusProviderOfAnAuction;
 import org.springframework.util.StringUtils;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public class Auction {
@@ -49,9 +50,6 @@ public class Auction {
         return finishDate;
     }
 
-    public String getAuthor() {
-        return author;
-    }
 
     public void setAuthor(String author) {
         this.author = author;
@@ -62,13 +60,14 @@ public class Auction {
     }
 
     private boolean exceededFortyEightHours() {
-        Date fiveMinutesAfterTheFinishDate = DateFactory.addFiveMinutes(this.finishDate);
-        Date initialFinishDatePlusFortyEightHours = DateFactory.addFortyEightHours(this.initialFinishDate);
+        Date fiveMinutesAfterTheFinishDate =DateFactory.add(this.finishDate, Calendar.MINUTE,5);
+        Date initialFinishDatePlusFortyEightHours = DateFactory.add(this.initialFinishDate, Calendar.DAY_OF_WEEK,2);
         return fiveMinutesAfterTheFinishDate.compareTo(initialFinishDatePlusFortyEightHours) > 0;
     }
 
     private boolean theOfferWasMadeWithinTheLastFiveMinutes() {
-        Date fiveMinutesBeforeTheCurrent = DateFactory.fiveMinutesBeforeTheCurrent();
+        Date fiveMinutesBeforeTheCurrent =DateFactory.add(new Date(), Calendar.MINUTE,-1);
+
         return fiveMinutesBeforeTheCurrent.compareTo(this.finishDate) < 0;
     }
 
@@ -88,7 +87,7 @@ public class Auction {
         long newPrice = fivePercentMoreThanTheCurrentPrice();
         setPrice(newPrice);
         if(theAuctionMustBeExtended()) {
-            setFinishDate(DateFactory.addFiveMinutes(this.finishDate));
+            setFinishDate(DateFactory.add(this.finishDate, Calendar.MINUTE,5));
         }
     }
 
