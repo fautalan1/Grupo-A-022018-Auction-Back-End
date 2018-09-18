@@ -6,17 +6,13 @@ import model.AuctionStatus;
 import model.DateFactory;
 import model.UserFactory;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
-import javax.validation.constraints.AssertTrue;
+import org.junit.Test;
+
 import java.util.Calendar;
 import java.util.Date;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.when;
 
 
 public class AuctionTest {
