@@ -5,10 +5,20 @@ import model.DateFactory;
 import model.StatusProviderOfAnAuction;
 import org.springframework.util.StringUtils;
 
+import javax.persistence.*;
+
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
+
+@Entity
 public class Auction {
+
+
+    @GeneratedValue
+    @Id
+    private long id;
 
     private String author;
     private Date publicationDate;
@@ -18,7 +28,10 @@ public class Auction {
     private String automaticOfferUser;
     private long automaticOfferAmount;
 
-    final private StatusProviderOfAnAuction statusProvide= new StatusProviderOfAnAuction();
+    @OneToMany(fetch= FetchType.EAGER,cascade=CascadeType.ALL)
+    private List<Bidders> bidders;
+
+    public Auction(){}
 
     public Auction(Date aPublicationDate, Date aFinishDate) {
         super();
@@ -38,7 +51,7 @@ public class Auction {
     }
 
     final public AuctionStatus state() {
-
+        StatusProviderOfAnAuction statusProvide= new StatusProviderOfAnAuction();
         return statusProvide.getState(this);
     }
 
