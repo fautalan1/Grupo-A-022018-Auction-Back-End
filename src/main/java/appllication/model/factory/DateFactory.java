@@ -1,11 +1,11 @@
-package appllication.model;
+package appllication.model.factory;
 
 import java.util.Calendar;
 import java.util.Date;
 
 public class DateFactory {
 
-    public static Date now() {
+    public Date now() {
         Calendar nowDate = Calendar.getInstance();
         nowDate.setTime(new Date());
         return nowDate.getTime();

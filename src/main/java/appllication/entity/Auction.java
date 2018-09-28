@@ -1,11 +1,13 @@
 package appllication.entity;
 
-import appllication.model.AuctionStatus;
-import appllication.model.DateFactory;
-import appllication.model.StatusProviderOfAnAuction;
+import appllication.model.auctionState.AuctionStatus;
+import appllication.model.factory.DateFactory;
+import appllication.model.auctionState.StatusProviderOfAnAuction;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Size;
 
 
 import java.util.Calendar;
@@ -21,8 +23,8 @@ public class Auction  {
     @Id
     private long id;
 
-
-    private String author;
+    @Email(message = "Email should be valid")
+    private String emailAuthor;
     private String automaticOfferUser;
 
     private Date publicationDate;
@@ -32,39 +34,36 @@ public class Auction  {
     private long price;
     private long automaticOfferAmount;
 
+    @Size(min = 10, max = 50,
+            message = " title must be between 10 and 50 characters")
+    private String title;
+
+    @Size(min = 10, max = 100,
+            message = " description must be between 10 and 50 characters")
+    private String description;
+    private String address;
+    private String photos;
+
+    private AuctionStatus currentState;
+
     @OneToMany(fetch= FetchType.EAGER,cascade=CascadeType.ALL)
-    private List<Bidders> bidders;
+    private List<Bidder> bidders;
 
     public Auction(){}
-
-    public Auction(Date aPublicationDate, Date aFinishDate) {
-        setPublicationDate(aPublicationDate);
-        setFinishDate(aFinishDate);
-        setInitialFinishDate(aFinishDate);
-        setAutomaticOfferAmount(0);
-
-    }
 
 
     public long getId() { return id; }
 
     public void setId(long id) { this.id = id; }
 
-    public List<Bidders> getBidders() { return bidders; }
+    public List<Bidder> getBidders() { return bidders; }
 
-    public void setBidders(List<Bidders> bidders) { this.bidders = bidders; }
+    public void setBidders(List<Bidder> bidders) { this.bidders = bidders; }
 
-    public String getAuthor(){ return this.author;    }
+    public String getEmailAuthor(){ return this.emailAuthor;    }
 
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-
-    public Date getInitialFinishDate(){return this.initialFinishDate; }
-
-    public void setInitialFinishDate(Date initialFinishDate) {
-        this.initialFinishDate = initialFinishDate;
+    public void setEmailAuthor(String emailAuthor) {
+        this.emailAuthor = emailAuthor;
     }
 
 
@@ -95,6 +94,10 @@ public class Auction  {
     }
 
 
+    public Date getInitialFinishDate(){return this.initialFinishDate; }
+    public void setInitialFinishDate(Date initialFinishDate) {
+        this.initialFinishDate = initialFinishDate;
+    }
 
     public Date getFinishDate() {
         return finishDate;
@@ -103,13 +106,26 @@ public class Auction  {
         this.finishDate = aDate;
     }
 
+    public String getTitle() {        return title;}
+    public void setTitle(String title) {        this.title = title;    }
 
+    public String getDescription() {        return description;    }
+    public void setDescription(String description) {        this.description = description;    }
 
+    public String getPhotos() {        return photos;    }
+    public void setPhotos(String photos) {     this.photos=photos;       }
 
+    public String getAddress() {        return address;    }
+    public void setAddress(String address) {        this.address = address;    }
 
+    public AuctionStatus getCurrentState() {        return currentState;    }
+
+    public void setCurrentState(AuctionStatus currentState) {        this.currentState = currentState;    }
 
     public AuctionStatus state() {
-        return new StatusProviderOfAnAuction().getState(this);
+
+        this.setCurrentState(new StatusProviderOfAnAuction().getState(this));
+        return this.getCurrentState();
     }
 
     private boolean theAuctionMustBeExtended() {
@@ -151,8 +167,6 @@ public class Auction  {
         return this.automaticOfferAmount != 0 && newPrice <= this.getAutomaticOfferAmount();
     }
 
-
-
     public boolean thereIsAutomaticUser() {
       return !StringUtils.isEmpty(automaticOfferUser);
     }
@@ -160,10 +174,11 @@ public class Auction  {
     public boolean isFinished(){ return this.state().equals(AuctionStatus.COMPLETED); }
 
 
-    public boolean  isAuthor(String aBidder){ return  aBidder.equalsIgnoreCase(this.getAuthor());}
+    public boolean  isAuthor(String aBidder){ return  aBidder.equalsIgnoreCase(this.getEmailAuthor());}
 
     public boolean isInProgress(){return this.state().equals(AuctionStatus.IN_PROGRESS); }
 
+    public boolean isNew(){return this.state().equals(AuctionStatus.NEW); }
 
 
 }

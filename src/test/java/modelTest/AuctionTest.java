@@ -1,10 +1,10 @@
 package modelTest;
 
 import appllication.entity.Auction;
-import appllication.model.AuctionFactory;
-import appllication.model.AuctionStatus;
-import appllication.model.DateFactory;
-import appllication.model.UserFactory;
+import appllication.model.factory.AuctionFactory;
+import appllication.model.auctionState.AuctionStatus;
+import appllication.model.factory.DateFactory;
+import appllication.model.factory.UserFactory;
 import org.junit.Assert;
 
 import org.junit.Test;
@@ -140,7 +140,7 @@ public class AuctionTest {
 
     @Test public void anAuctionKnowsThatTheBidderIsTheAuthor(){
         Auction auction = AuctionFactory.anyAuction();
-        auction.setAuthor("Pepita");
+        auction.setEmailAuthor("Pepita");
 
         assertTrue(auction.isAuthor("pepita"));
     }
@@ -148,7 +148,7 @@ public class AuctionTest {
 
     @Test public void anAuctionKnowsThatTheBidderIsNotTheAuthor(){
         Auction auction = AuctionFactory.anyAuction();
-        auction.setAuthor("Pepon");
+        auction.setEmailAuthor("Pepon");
 
         assertFalse(auction.isAuthor("pepita"));
     }

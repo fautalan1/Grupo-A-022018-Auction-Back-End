@@ -13,8 +13,8 @@ import java.util.List;
 @RestController
 public class AuctionController {
 
-    @Autowired//para indicar que inyecte spring
-    @Qualifier("auctionService")//para decirle que va estar inyectando
+    @Autowired
+    @Qualifier("auctionService")
     private AuctionService auctionService;
 
 
@@ -30,7 +30,7 @@ public class AuctionController {
 
     @PutMapping("/auction")
     public Auction add(@RequestBody @Valid Auction anAuction){
-        return auctionService.newA(anAuction);
+        return auctionService.create(anAuction);
     }
 
     @PostMapping("/auction")

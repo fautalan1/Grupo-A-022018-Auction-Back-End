@@ -1,9 +1,10 @@
 package appllication.entity;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
-public class Bidders {
+public class Bidder {
 
     @GeneratedValue
     @Id
@@ -13,11 +14,13 @@ public class Bidders {
 
     private long price;
 
+    private Date publicationDate;
+
     @ManyToOne
     private Auction auction;
 
 
-    public Bidders(){}
+    public Bidder(){}
 
 
     public long getId() {
@@ -42,5 +45,21 @@ public class Bidders {
 
     public void setPrice(long price) {
         this.price = price;
+    }
+
+    public Date getPublicationDate() {
+        return publicationDate;
+    }
+
+    public void setPublicationDate(Date publicationDate) {
+        this.publicationDate = publicationDate;
+    }
+
+    public Auction getAuction() {
+        return auction;
+    }
+
+    public void setAuction(Auction auction) {
+        this.auction = auction;
     }
 }

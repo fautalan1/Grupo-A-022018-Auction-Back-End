@@ -1,4 +1,4 @@
-package appllication.model;
+package appllication.model.factory;
 
 public class UserFactory {
 

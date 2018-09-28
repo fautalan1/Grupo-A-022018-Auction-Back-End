@@ -1,6 +1,7 @@
-package appllication.model;
+package appllication.model.auctionState;
 
 import appllication.entity.Auction;
+import appllication.model.auctionState.*;
 
 import java.util.Arrays;
 import java.util.List;
