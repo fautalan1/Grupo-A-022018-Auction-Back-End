@@ -45,7 +45,7 @@ public class AuctionTest {
         Auction auction = AuctionFactory.anyAuction();
         auction.setPrice(100);
 
-        auction.offer();
+        auction.offer("user");
 
         assertEquals(105, auction.getPrice());
     }
@@ -57,7 +57,7 @@ public class AuctionTest {
         Date oldFinishDate = auction.getFinishDate();
         Date finishDate = DateFactory.add(oldFinishDate,Calendar.MINUTE,5);
 
-        auction.offer();
+        auction.offer("user");
 
         assertEquals(finishDate, auction.getFinishDate());
     }
@@ -68,7 +68,7 @@ public class AuctionTest {
         auction.setFinishDate(DateFactory.add(new Date(),Calendar.MINUTE,-10));
         Date finishDate = auction.getFinishDate();
 
-        auction.offer();
+        auction.offer("user");
 
         assertEquals(finishDate, auction.getFinishDate());
     }
@@ -80,7 +80,7 @@ public class AuctionTest {
         auction.setFinishDate(DateFactory.add(new Date(),Calendar.MINUTE,-1));
         Date finishDate = auction.getFinishDate();
 
-        auction.offer();
+        auction.offer("user");
 
         assertEquals(finishDate, auction.getFinishDate());
     }
@@ -122,13 +122,11 @@ public class AuctionTest {
         assertFalse(auction.thereIsAutomaticUser());
     }
 
-
     @Test public void anAuctionKnowsIfTerm(){
         Auction auction = AuctionFactory.anyAuction();
         auction.setFinishDate(DateFactory.add(new Date(),Calendar.HOUR,-1));
         assertTrue(auction.isFinished());
     }
-
 
     @Test public void anAuctionKnowsIfIDoNotFinish(){
         Auction auction = AuctionFactory.anyAuction();
@@ -145,7 +143,6 @@ public class AuctionTest {
         assertTrue(auction.isAuthor("pepita"));
     }
 
-
     @Test public void anAuctionKnowsThatTheBidderIsNotTheAuthor(){
         Auction auction = AuctionFactory.anyAuction();
         auction.setAuthor("Pepon");
@@ -159,9 +156,5 @@ public class AuctionTest {
         auction.setFinishDate(DateFactory.add(time,Calendar.MINUTE,5));
         assertTrue(auction.isInProgress());
     }
-
-
-
-
 
 }

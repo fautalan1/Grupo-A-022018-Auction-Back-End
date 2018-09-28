@@ -1,0 +1,15 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - ApplicationRestFull",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "mainClass": "appllication.ApplicationRestFull",
+            "args": "",
+            "projectName": "Grupo-A-022018-entity.Auction-Back"
+        }
+    ]
+}

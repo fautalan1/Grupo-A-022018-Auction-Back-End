@@ -7,8 +7,6 @@ import org.springframework.stereotype.Component;
 @Component("auctionDao")
 public interface AuctionDao extends JpaRepository<Auction, Long> {
 
-
     public abstract Auction findByAuthor(String anAuthorName);
-
 
 }
