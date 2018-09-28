@@ -1,8 +1,7 @@
-package model;
+package appllication.model;
 
-import entity.Auction;
+import appllication.entity.Auction;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;

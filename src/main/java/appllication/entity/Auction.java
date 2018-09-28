@@ -1,11 +1,12 @@
-package entity;
+package appllication.entity;
 
-import model.AuctionStatus;
-import model.DateFactory;
-import model.StatusProviderOfAnAuction;
+import appllication.model.AuctionStatus;
+import appllication.model.DateFactory;
+import appllication.model.StatusProviderOfAnAuction;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
+
 
 import java.util.Calendar;
 import java.util.Date;
@@ -13,19 +14,22 @@ import java.util.List;
 
 
 @Entity
-public class Auction {
+public class Auction  {
 
 
     @GeneratedValue
     @Id
     private long id;
 
+
     private String author;
+    private String automaticOfferUser;
+
     private Date publicationDate;
     private Date finishDate;
     private Date initialFinishDate;
+
     private long price;
-    private String automaticOfferUser;
     private long automaticOfferAmount;
 
     @OneToMany(fetch= FetchType.EAGER,cascade=CascadeType.ALL)
@@ -34,7 +38,6 @@ public class Auction {
     public Auction(){}
 
     public Auction(Date aPublicationDate, Date aFinishDate) {
-        super();
         setPublicationDate(aPublicationDate);
         setFinishDate(aFinishDate);
         setInitialFinishDate(aFinishDate);
@@ -42,30 +45,71 @@ public class Auction {
 
     }
 
-    public void setPublicationDate(Date aDate) {
-        this.publicationDate = aDate;
+
+    public long getId() { return id; }
+
+    public void setId(long id) { this.id = id; }
+
+    public List<Bidders> getBidders() { return bidders; }
+
+    public void setBidders(List<Bidders> bidders) { this.bidders = bidders; }
+
+    public String getAuthor(){ return this.author;    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
-    public void setFinishDate(Date aDate) {
-        this.finishDate = aDate;
+
+    public Date getInitialFinishDate(){return this.initialFinishDate; }
+
+    public void setInitialFinishDate(Date initialFinishDate) {
+        this.initialFinishDate = initialFinishDate;
     }
 
-    final public AuctionStatus state() {
-        StatusProviderOfAnAuction statusProvide= new StatusProviderOfAnAuction();
-        return statusProvide.getState(this);
+
+    public long getAutomaticOfferAmount(){ return this.automaticOfferAmount;  }
+
+    public void setAutomaticOfferAmount(long automaticOfferAmount) { this.automaticOfferAmount = automaticOfferAmount;    }
+
+
+
+    public void setAutomaticOfferUser(String automaticOfferUser) {this.automaticOfferUser = automaticOfferUser; }
+
+
+
+    public long getPrice() {
+        return price;
     }
+
+    public void setPrice(long price) {
+        this.price = price;
+    }
+
 
     public Date getPublicationDate() {
         return publicationDate;
     }
+    public void setPublicationDate(Date aDate) {
+        this.publicationDate = aDate;
+    }
+
+
 
     public Date getFinishDate() {
         return finishDate;
     }
+    public void setFinishDate(Date aDate) {
+        this.finishDate = aDate;
+    }
 
 
-    public void setAuthor(String author) {
-        this.author = author;
+
+
+
+
+    public AuctionStatus state() {
+        return new StatusProviderOfAnAuction().getState(this);
     }
 
     private boolean theAuctionMustBeExtended() {
@@ -74,7 +118,7 @@ public class Auction {
 
     private boolean exceededFortyEightHours() {
         Date fiveMinutesAfterTheFinishDate =DateFactory.add(this.finishDate, Calendar.MINUTE,5);
-        Date initialFinishDatePlusFortyEightHours = DateFactory.add(this.initialFinishDate, Calendar.DAY_OF_WEEK,2);
+        Date initialFinishDatePlusFortyEightHours = DateFactory.add(this.getInitialFinishDate(), Calendar.DAY_OF_WEEK,2);
         return fiveMinutesAfterTheFinishDate.compareTo(initialFinishDatePlusFortyEightHours) > 0;
     }
 
@@ -88,13 +132,6 @@ public class Auction {
         return (this.price * 5 / 100) + this.price;
     }
 
-    public long getPrice() {
-        return price;
-    }
-
-    public void setPrice(long price) {
-        this.price = price;
-    }
 
     public void offer() {
         long newPrice = fivePercentMoreThanTheCurrentPrice();
@@ -111,41 +148,21 @@ public class Auction {
 
     public boolean thereIsToDoTheAutomaticOffer() {
         long newPrice = fivePercentMoreThanTheCurrentPrice();
-        return this.automaticOfferAmount != 0 && newPrice <= this.automaticOfferAmount;
+        return this.automaticOfferAmount != 0 && newPrice <= this.getAutomaticOfferAmount();
     }
 
 
-
-    public void setInitialFinishDate(Date initialFinishDate) {
-        this.initialFinishDate = initialFinishDate;
-    }
-
-    public void setAutomaticOfferAmount(long automaticOfferAmount) {
-        this.automaticOfferAmount = automaticOfferAmount;
-    }
-
-
-
-    public void setAutomaticOfferUser(String automaticOfferUser) {
-        this.automaticOfferUser = automaticOfferUser;
-    }
 
     public boolean thereIsAutomaticUser() {
       return !StringUtils.isEmpty(automaticOfferUser);
     }
 
-    public boolean isFinished(){
+    public boolean isFinished(){ return this.state().equals(AuctionStatus.COMPLETED); }
 
-        return this.state().equals(AuctionStatus.COMPLETED);
-    }
 
-    public boolean  isAuthor(String aBidder){
-      return  aBidder.equalsIgnoreCase(author);
+    public boolean  isAuthor(String aBidder){ return  aBidder.equalsIgnoreCase(this.getAuthor());}
 
-    }
-    public boolean isInProgress(){
-        return this.state().equals(AuctionStatus.IN_PROGRESS);
-    }
+    public boolean isInProgress(){return this.state().equals(AuctionStatus.IN_PROGRESS); }
 
 
 

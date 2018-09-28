@@ -1,6 +1,6 @@
-package model;
+package appllication.model;
 
-import entity.Auction;
+import appllication.entity.Auction;
 
 import java.util.Calendar;
 import java.util.Date;

@@ -1,10 +1,10 @@
 package modelTest;
 
-import entity.Auction;
-import model.AuctionFactory;
-import model.AuctionStatus;
-import model.DateFactory;
-import model.UserFactory;
+import appllication.entity.Auction;
+import appllication.model.AuctionFactory;
+import appllication.model.AuctionStatus;
+import appllication.model.DateFactory;
+import appllication.model.UserFactory;
 import org.junit.Assert;
 
 import org.junit.Test;
