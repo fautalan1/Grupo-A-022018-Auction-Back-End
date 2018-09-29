@@ -1,16 +1,16 @@
 package appllication.service;
 
 import appllication.entity.Auction;
-import appllication.model.Exception.MaxAuctionInProgressException;
-import appllication.model.Exception.ThereIsNotAuctionException;
+import appllication.model.Exception.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import appllication.repository.AuctionDao;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.time.*;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,9 +28,13 @@ public class AuctionService {
               throw new MaxAuctionInProgressException("It is max Auction in progress");
           }
 
-          if( this.isGreaterThanTheCurrentDay(anAuction.getPublicationDate())){
-              throw new RuntimeException("Fire");
+          if(!this.isGreaterThanTheCurrentDay(LocalDateTime.now(),anAuction.getPublicationDate(),1)){
+              throw new ItIsNotGreaterThanTheCurrentDayException("It Is Not Greater Than The Current  one Day  ");
           }
+
+          if(!this.isGreaterThanTheCurrentDay(anAuction.getPublicationDate(),anAuction.getFinishDate(),2)){
+              throw new ItIsNotGreaterThanTheCurrentDayException("It Is Not Greater Than The Current  two Day  ");
+           }
 
            auctionDao.save(anAuction);
            return anAuction;
@@ -53,7 +57,7 @@ public class AuctionService {
     }
 
     @Transactional
-    public List<Auction> recoverAll(){   return auctionDao.findAll();   }
+    public List<Auction> recoverAll(){ return auctionDao.findAll();  }
 
 
     private boolean isMaxAuctionInProgress(String anEmailAuthor){
@@ -64,9 +68,12 @@ public class AuctionService {
 
         return someAuctionNewAndInProgress.size() >= 5 ;
     }
-    private boolean isGreaterThanTheCurrentDay(Date aPublicationDate){
-        Date now = Calendar.getInstance().getTime();
-        return aPublicationDate.compareTo(now) < 0;
+    private boolean isGreaterThanTheCurrentDay(LocalDateTime aLocalDateTime,LocalDateTime otherLocalDateTime,long aDay){
+        System.out.println("----------------------------");
+        System.out.println(Duration.between(aLocalDateTime, otherLocalDateTime).abs().toDays() >= aDay);
+        System.out.println(Duration.between(aLocalDateTime, otherLocalDateTime).abs().toDays());
+
+        return Duration.between(aLocalDateTime, otherLocalDateTime).abs().toDays() >= aDay;
     }
 
 

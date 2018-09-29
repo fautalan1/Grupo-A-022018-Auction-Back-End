@@ -10,6 +10,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -27,9 +29,9 @@ public class Auction  {
     private String emailAuthor;
     private String automaticOfferUser;
 
-    private Date publicationDate;
-    private Date finishDate;
-    private Date initialFinishDate;
+    private LocalDateTime publicationDate;
+    private LocalDateTime finishDate;
+    private LocalDateTime initialFinishDate;
 
     private long price;
     private long automaticOfferAmount;
@@ -86,23 +88,23 @@ public class Auction  {
     }
 
 
-    public Date getPublicationDate() {
+    public LocalDateTime getPublicationDate() {
         return publicationDate;
     }
-    public void setPublicationDate(Date aDate) {
+    public void setPublicationDate(LocalDateTime aDate) {
         this.publicationDate = aDate;
     }
 
 
-    public Date getInitialFinishDate(){return this.initialFinishDate; }
-    public void setInitialFinishDate(Date initialFinishDate) {
+    public LocalDateTime getInitialFinishDate(){return this.initialFinishDate; }
+    public void setInitialFinishDate(LocalDateTime initialFinishDate) {
         this.initialFinishDate = initialFinishDate;
     }
 
-    public Date getFinishDate() {
+    public LocalDateTime getFinishDate() {
         return finishDate;
     }
-    public void setFinishDate(Date aDate) {
+    public void setFinishDate(LocalDateTime aDate) {
         this.finishDate = aDate;
     }
 
@@ -133,13 +135,14 @@ public class Auction  {
     }
 
     private boolean exceededFortyEightHours() {
-        Date fiveMinutesAfterTheFinishDate =DateFactory.add(this.finishDate, Calendar.MINUTE,5);
-        Date initialFinishDatePlusFortyEightHours = DateFactory.add(this.getInitialFinishDate(), Calendar.DAY_OF_WEEK,2);
+        LocalDateTime fiveMinutesAfterTheFinishDate = getFinishDate().plusMinutes(5);
+        LocalDateTime initialFinishDatePlusFortyEightHours= getInitialFinishDate().plusWeeks(2);
         return fiveMinutesAfterTheFinishDate.compareTo(initialFinishDatePlusFortyEightHours) > 0;
     }
 
     private boolean theOfferWasMadeWithinTheLastFiveMinutes() {
-        Date fiveMinutesBeforeTheCurrent =DateFactory.add(new Date(), Calendar.MINUTE,-1);
+
+        LocalDateTime fiveMinutesBeforeTheCurrent = LocalDateTime.now().minusMinutes(1);
 
         return fiveMinutesBeforeTheCurrent.compareTo(this.finishDate) < 0;
     }
@@ -153,7 +156,8 @@ public class Auction  {
         long newPrice = fivePercentMoreThanTheCurrentPrice();
         setPrice(newPrice);
         if(theAuctionMustBeExtended()) {
-            setFinishDate(DateFactory.add(this.finishDate, Calendar.MINUTE,5));
+            setFinishDate(this.finishDate.plusMinutes(5));
+
         }
     }
 
@@ -174,11 +178,10 @@ public class Auction  {
     public boolean isFinished(){ return this.state().equals(AuctionStatus.COMPLETED); }
 
 
-    public boolean  isAuthor(String aBidder){ return  aBidder.equalsIgnoreCase(this.getEmailAuthor());}
+    public boolean isAuthor(String aBidder){ return  aBidder.equalsIgnoreCase(this.getEmailAuthor());}
 
     public boolean isInProgress(){return this.state().equals(AuctionStatus.IN_PROGRESS); }
 
-    public boolean isNew(){return this.state().equals(AuctionStatus.NEW); }
 
 
 }
