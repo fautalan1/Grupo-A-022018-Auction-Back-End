@@ -13,9 +13,12 @@ import java.util.List;
 @RestController
 public class AuctionController {
 
+    private final AuctionService auctionService;
+
     @Autowired
-    @Qualifier("auctionService")
-    private AuctionService auctionService;
+    public AuctionController(@Qualifier("auctionService") AuctionService auctionService) {
+        this.auctionService = auctionService;
+    }
 
     @GetMapping("/auctions")
     public List<Auction> all(){

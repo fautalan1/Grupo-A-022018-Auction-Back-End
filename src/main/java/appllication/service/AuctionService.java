@@ -18,21 +18,23 @@ import java.util.stream.Collectors;
 @Component("auctionService")
 public class AuctionService {
 
+    private final AuctionDao auctionDao;
+
     @Autowired
-    @Qualifier("auctionDao")
-    private AuctionDao auctionDao;
+    public AuctionService(@Qualifier("auctionDao") AuctionDao auctionDao) {
+        this.auctionDao = auctionDao;
+    }
 
     @Transactional
     public Auction create(Auction anAuction)  {
           if(this.isMaxAuctionInProgress(anAuction.getEmailAuthor())){
               throw new MaxAuctionInProgressException("It is max Auction in progress");
           }
-
-          if(!this.isGreaterThanTheCurrentDay(LocalDateTime.now(),anAuction.getPublicationDate(),1)){
+          if(this.isGreaterThanTheCurrentDay(LocalDateTime.now(), anAuction.getPublicationDate(), 1)){
               throw new ItIsNotGreaterThanTheCurrentDayException("It Is Not Greater Than The Current  one Day");
           }
 
-          if(!this.isGreaterThanTheCurrentDay(anAuction.getPublicationDate(),anAuction.getFinishDate(),2)){
+          if(this.isGreaterThanTheCurrentDay(anAuction.getPublicationDate(), anAuction.getFinishDate(), 2)){
               throw new ItIsNotGreaterThanTheCurrentDayException("It Is Not Greater Than The Current two Day");
            }
 
@@ -68,9 +70,9 @@ public class AuctionService {
         return someAuctionNewAndInProgress.size() >= 5 ;
     }
 
-    private boolean isGreaterThanTheCurrentDay(LocalDateTime aLocalDateTime,LocalDateTime otherLocalDateTime,long aDay){
+    private boolean isGreaterThanTheCurrentDay(LocalDateTime aLocalDateTime, LocalDateTime otherLocalDateTime, long aDay){
 
-        return Duration.between(aLocalDateTime, otherLocalDateTime).abs().toDays() >= aDay;
+        return Duration.between(aLocalDateTime, otherLocalDateTime).abs().toDays() < aDay;
     }
 
     public Auction recoverById(long auctionId) {

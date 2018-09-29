@@ -1,15 +1,12 @@
-package appllication.entity;
+package appllication.model.dto;
 
-import javax.persistence.*;
+import javax.persistence.Column;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
-@Entity
-public class User {
-
-    @GeneratedValue
-    @Id
-    private long id;
+public class NewUserDto {
 
     private String name;
 
@@ -19,28 +16,14 @@ public class User {
     @Email(message = "Email should be valid")
     private String email;
 
+    @Size(min = 4, max = 10,
+            message = " password must be between 4 and 10 characters")
+    @Pattern(regexp = "^(?=.*\\d)(?=.*[A-Za-z])[A-Za-z0-9]{1,10}$")
     private String password;
 
     private LocalDateTime birthDate;
 
-    public User() {}
-
-    public User(String email, String name, String lastName, String password, LocalDateTime birthDate) {
-        super();
-        setEmail(email);
-        setName(name);
-        setPassword(password);
-        setLastName(lastName);
-        setBirthDate(birthDate);
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
+    public NewUserDto() {}
 
     public String getName() {
         return name;
@@ -81,7 +64,5 @@ public class User {
     public void setBirthDate(LocalDateTime birthDate) {
         this.birthDate = birthDate;
     }
-
-
 
 }
