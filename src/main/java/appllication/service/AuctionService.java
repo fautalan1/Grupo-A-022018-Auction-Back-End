@@ -29,11 +29,11 @@ public class AuctionService {
           }
 
           if(!this.isGreaterThanTheCurrentDay(LocalDateTime.now(),anAuction.getPublicationDate(),1)){
-              throw new ItIsNotGreaterThanTheCurrentDayException("It Is Not Greater Than The Current  one Day  ");
+              throw new ItIsNotGreaterThanTheCurrentDayException("It Is Not Greater Than The Current  one Day");
           }
 
           if(!this.isGreaterThanTheCurrentDay(anAuction.getPublicationDate(),anAuction.getFinishDate(),2)){
-              throw new ItIsNotGreaterThanTheCurrentDayException("It Is Not Greater Than The Current  two Day  ");
+              throw new ItIsNotGreaterThanTheCurrentDayException("It Is Not Greater Than The Current two Day");
            }
 
            auctionDao.save(anAuction);
@@ -65,21 +65,21 @@ public class AuctionService {
                                                             stream().
                                                             filter(anAuction -> !anAuction.isFinished()).
                                                             collect(Collectors.toList());
-
         return someAuctionNewAndInProgress.size() >= 5 ;
     }
+
     private boolean isGreaterThanTheCurrentDay(LocalDateTime aLocalDateTime,LocalDateTime otherLocalDateTime,long aDay){
-        System.out.println("----------------------------");
-        System.out.println(Duration.between(aLocalDateTime, otherLocalDateTime).abs().toDays() >= aDay);
-        System.out.println(Duration.between(aLocalDateTime, otherLocalDateTime).abs().toDays());
 
         return Duration.between(aLocalDateTime, otherLocalDateTime).abs().toDays() >= aDay;
     }
 
-
-
-
-
+    public Auction recoverById(long auctionId) {
+        Optional<Auction> anAuction = auctionDao.findById(auctionId);
+        if(! anAuction.isPresent()){
+            throw new RuntimeException("No user was found");
+        }
+        return anAuction.get();
+    }
 
 
 }

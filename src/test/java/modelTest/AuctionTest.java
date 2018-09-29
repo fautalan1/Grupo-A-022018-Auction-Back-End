@@ -43,7 +43,7 @@ public class AuctionTest {
         Auction auction = AuctionFactory.anyAuction();
         auction.setPrice(100);
 
-        auction.offer();
+        auction.offer("userEmail");
 
         assertEquals(105, auction.getPrice());
     }
@@ -55,7 +55,7 @@ public class AuctionTest {
         LocalDateTime oldFinishDate = auction.getFinishDate()  ;
         LocalDateTime finishDate    = oldFinishDate.plusMinutes(5);
 
-        auction.offer();
+        auction.offer("userEmail");
 
         assertEquals(finishDate, auction.getFinishDate());
     }
@@ -65,7 +65,7 @@ public class AuctionTest {
         Auction auction = AuctionFactory.anyAuction();
         auction.setFinishDate(LocalDateTime.now().minusMinutes(10));
         LocalDateTime finishDate = auction.getFinishDate();
-        auction.offer();
+        auction.offer("userEmail");
 
         assertEquals(finishDate, auction.getFinishDate());
     }
@@ -76,7 +76,7 @@ public class AuctionTest {
         auction.setInitialFinishDate(LocalDateTime.now().minusWeeks(2));
         auction.setFinishDate(LocalDateTime.now().minusMinutes(1));
         LocalDateTime finishDate = auction.getFinishDate();
-        auction.offer();
+        auction.offer("userEmail");
 
         assertEquals(finishDate, auction.getFinishDate());
     }

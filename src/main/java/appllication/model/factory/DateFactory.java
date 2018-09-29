@@ -11,7 +11,6 @@ public class DateFactory {
         return nowDate.getTime();
     }
 
-
     public static Date add(Date date, int time, int howMuch) {
         Calendar newDate = Calendar.getInstance();
         newDate.setTime(date);

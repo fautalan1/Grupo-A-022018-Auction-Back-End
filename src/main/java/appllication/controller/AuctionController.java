@@ -17,7 +17,6 @@ public class AuctionController {
     @Qualifier("auctionService")
     private AuctionService auctionService;
 
-
     @GetMapping("/auctions")
     public List<Auction> all(){
         return auctionService.recoverAll();
@@ -38,8 +37,12 @@ public class AuctionController {
         return auctionService.update(anAuction);
     }
 
-
-
-
+    @PostMapping("/auction/{auctionId}/offer/{bidder}")
+    public Auction offer(@PathVariable("auctionId") long auctionId, @PathVariable("bidder") String bidder){
+        // Validations
+        Auction auction = auctionService.recoverById(auctionId);
+        auction.offer(bidder);
+        return auctionService.update(auction);
+    }
 
 }

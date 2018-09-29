@@ -19,9 +19,13 @@ public class Bidder {
     @ManyToOne
     private Auction auction;
 
-
     public Bidder(){}
 
+    public Bidder(String bidder, Auction auction) {
+        setAuthor(bidder);
+        setAuction(auction);
+        setPublicationDate(new Date());
+    }
 
     public long getId() {
         return id;
