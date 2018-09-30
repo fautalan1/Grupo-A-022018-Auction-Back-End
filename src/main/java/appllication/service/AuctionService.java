@@ -31,7 +31,7 @@ public class AuctionService {
               throw new MaxAuctionInProgressException("It is max Auction in progress");
           }
           if(this.isGreaterThanTheCurrentDay(LocalDateTime.now(), anAuction.getPublicationDate(), 1)){
-              throw new ItIsNotGreaterThanTheCurrentDayException("It Is Not Greater Than The Current  one Day");
+              throw new ItIsNotGreaterThanTheCurrentDayException("It Is Not Greater Than The Current one Day");
           }
 
           if(this.isGreaterThanTheCurrentDay(anAuction.getPublicationDate(), anAuction.getFinishDate(), 2)){
@@ -63,7 +63,7 @@ public class AuctionService {
 
 
     private boolean isMaxAuctionInProgress(String anEmailAuthor){
-        List<Auction> someAuctionNewAndInProgress= auctionDao.findAllByEmailAuthor(anEmailAuthor).
+        List<Auction> someAuctionNewAndInProgress = auctionDao.findAllByEmailAuthor(anEmailAuthor).
                                                             stream().
                                                             filter(anAuction -> !anAuction.isFinished()).
                                                             collect(Collectors.toList());
