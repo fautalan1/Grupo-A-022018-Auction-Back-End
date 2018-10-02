@@ -42,10 +42,7 @@ public class AuctionController {
 
     @PostMapping("/auction/{auctionId}/offer/{bidder}")
     public Auction offer(@PathVariable("auctionId") long auctionId, @PathVariable("bidder") String bidder){
-        // Validations
-        Auction auction = auctionService.recoverById(auctionId);
-        auction.offer(bidder);
-        return auctionService.update(auction);
+        return auctionService.offer(auctionId, bidder);
     }
 
 }

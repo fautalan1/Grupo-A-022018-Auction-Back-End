@@ -1,9 +1,16 @@
 package appllication.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Bidder {
 
     @GeneratedValue
@@ -14,17 +21,17 @@ public class Bidder {
 
     private long price;
 
-    private Date publicationDate;
+    private LocalDateTime publicationDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Auction auction;
 
     public Bidder(){}
 
-    public Bidder(String bidder, Auction auction) {
+    public Bidder(String bidder, Auction auction, LocalDateTime time) {
         setAuthor(bidder);
         setAuction(auction);
-        setPublicationDate(new Date());
+        setPublicationDate(time);
     }
 
     public long getId() {
@@ -51,11 +58,11 @@ public class Bidder {
         this.price = price;
     }
 
-    public Date getPublicationDate() {
+    public LocalDateTime getPublicationDate() {
         return publicationDate;
     }
 
-    public void setPublicationDate(Date publicationDate) {
+    public void setPublicationDate(LocalDateTime publicationDate) {
         this.publicationDate = publicationDate;
     }
 

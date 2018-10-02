@@ -2,6 +2,8 @@ package appllication.entity;
 
 import appllication.model.auctionState.AuctionStatus;
 import appllication.model.auctionState.StatusProviderOfAnAuction;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
@@ -14,6 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Auction  {
 
     @GeneratedValue
@@ -147,7 +152,7 @@ public class Auction  {
     public void offer(String bidder) {
         long newPrice = fivePercentMoreThanTheCurrentPrice();
         setPrice(newPrice);
-        addBidder(new Bidder(bidder, this));
+        addBidder(new Bidder(bidder, this, LocalDateTime.now()));
         if(theAuctionMustBeExtended()) {
             setFinishDate(this.finishDate.plusMinutes(5));
         }
@@ -178,4 +183,11 @@ public class Auction  {
 
     public boolean isInProgress(){return this.state().equals(AuctionStatus.IN_PROGRESS); }
 
+    public boolean isTheLastBidder(String bidder) {
+        return !this.bidders.isEmpty() && getLastBidder().getAuthor().equalsIgnoreCase(bidder);
+    }
+
+    private Bidder getLastBidder() {
+        return this.bidders.get(this.bidders.size()-1);
+    }
 }

@@ -83,5 +83,19 @@ public class AuctionService {
         return anAuction.get();
     }
 
+    public Auction offer(long auctionId, String bidder) {
+        Auction auction = recoverById(auctionId);
+        if(auction.isAuthor(bidder)){
+            throw new BidderIsTheAuctionAuthorException("Bidder is auction author");
+        }
+        if(auction.isTheLastBidder(bidder)){
+            throw new LastBidderException("It is last bidder");
+        }
+        if(!auction.isInProgress()){
+            throw new NotProgressException("Auction is not in progress");
+        }
 
+        auction.offer(bidder);
+        return update(auction);
+    }
 }
