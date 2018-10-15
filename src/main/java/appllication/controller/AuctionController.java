@@ -45,4 +45,8 @@ public class AuctionController {
         return auctionService.offer(auctionId, bidder);
     }
 
+    @GetMapping("/auctionss")
+    public List<Auction> allByOrderBy(){
+        return auctionService.recoverAllOrderByPublicationDate();
+    }
 }

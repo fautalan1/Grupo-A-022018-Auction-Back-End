@@ -5,6 +5,7 @@ import appllication.model.Exception.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import appllication.repository.AuctionDao;
 import org.springframework.transaction.annotation.Transactional;
@@ -97,5 +98,9 @@ public class AuctionService {
 
         auction.offer(bidder);
         return update(auction);
+    }
+
+    public List<Auction> recoverAllOrderByPublicationDate(){
+        return auctionDao.findByOrderByPublicationDateAsc(PageRequest.of(1,3));
     }
 }
