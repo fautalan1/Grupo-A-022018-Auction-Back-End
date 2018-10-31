@@ -29,7 +29,7 @@ public class UserController {
     }
 
     @PostMapping("/users/sessions")
-    public SesionToken signIn(@RequestBody @Valid Login anUser){
+    public User signIn(@RequestBody @Valid Login anUser){
         return userService.signIn(anUser);
     }
 

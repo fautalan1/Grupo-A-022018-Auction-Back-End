@@ -5,13 +5,9 @@ import appllication.model.Exception.EmailExistsException;
 import appllication.model.Exception.LoginErrorException;
 import appllication.model.dto.NewUserDto;
 import appllication.model.login.Login;
-import appllication.model.login.SesionToken;
 import appllication.repository.UserDao;
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,11 +16,8 @@ public class UserService {
 
     private final UserDao userDao;
 
-    private final PasswordEncoder passwordEncoder;
-
     @Autowired
-    public UserService(PasswordEncoder passwordEncoder, @Qualifier("userDao") UserDao userDao) {
-        this.passwordEncoder = passwordEncoder;
+    public UserService(@Qualifier("userDao") UserDao userDao) {
         this.userDao = userDao;
     }
 
@@ -34,7 +27,7 @@ public class UserService {
             throw new EmailExistsException(
                     "There is an account with that email: " + anUser.getEmail());
         }
-        User user = new User(anUser.getEmail(), anUser.getName(), anUser.getLastName(), passwordEncoder.encode(anUser.getPassword()), anUser.getBirthDate());
+        User user = new User(anUser.getEmail(), anUser.getName(), anUser.getLastName(), anUser.getPassword(), anUser.getBirthDate());
         userDao.save(user);
         return user;
     }
@@ -45,16 +38,11 @@ public class UserService {
     }
 
     @Transactional
-    public SesionToken signIn(Login aLogin) {
+    public User signIn(Login aLogin) {
         User user = userDao.findByEmail(aLogin.getEmail());
-        boolean correctLogin = user != null && passwordEncoder.matches(aLogin.getPassword(), user.getPassword());
+        boolean correctLogin = user != null && aLogin.getPassword().equals(user.getPassword());
         if(correctLogin){
-        Algorithm algorithm = Algorithm.HMAC256("secret");
-        String token = JWT.create()
-            .withIssuer("auth0")
-            .withClaim("email", user.getEmail())
-            .sign(algorithm);
-        return new SesionToken(user, token);
+            return user;
         }
         else {
             throw new LoginErrorException("Incorrect email or password");
