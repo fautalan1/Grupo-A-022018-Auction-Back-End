@@ -151,12 +151,16 @@ public class Auction  {
 
     public void offer(String bidder) {
         long newPrice = fivePercentMoreThanTheCurrentPrice();
+        addBidder(new Bidder(bidder, this, newPrice, LocalDateTime.now()));
         setPrice(newPrice);
-        addBidder(new Bidder(bidder, this, LocalDateTime.now()));
         if(theAuctionMustBeExtended()) {
             setFinishDate(this.finishDate.plusMinutes(5));
         }
-        // verify if there is to do the offer with automatic tracking
+        if(this.automaticOfferUser != null &&
+           !bidder.equals(this.emailAuthor) &&
+           this.fivePercentMoreThanTheCurrentPrice() <= this.automaticOfferAmount) {
+            this.offer(this.automaticOfferUser);
+        }
     }
 
     private void addBidder(Bidder bidder) {

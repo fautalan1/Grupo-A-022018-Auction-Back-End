@@ -76,7 +76,7 @@ public class AuctionService {
         return Duration.between(aLocalDateTime, otherLocalDateTime).abs().toDays() < aDay;
     }
 
-    public Auction recoverById(long auctionId) {
+    private Auction recoverById(long auctionId) {
         Optional<Auction> anAuction = auctionDao.findById(auctionId);
         if(! anAuction.isPresent()){
             throw new RuntimeException("No user was found");
@@ -92,10 +92,9 @@ public class AuctionService {
         if(auction.isTheLastBidder(bidder)){
             throw new LastBidderException("It is last bidder");
         }
-        if(!auction.isInProgress()){
-            throw new NotProgressException("Auction is not in progress");
-        }
-
+//        if(!auction.isInProgress()){
+//            throw new NotProgressException("Auction is not in progress");
+//        }
         auction.offer(bidder);
         return update(auction);
     }
