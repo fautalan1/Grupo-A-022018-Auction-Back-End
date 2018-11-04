@@ -45,6 +45,13 @@ public class AuctionController {
         return auctionService.offer(auctionId, bidder);
     }
 
+    @PostMapping("/auction/first/offer/{auctionId}/{maxAmount}/{bidder}")
+    public Auction firstOffer(@PathVariable("auctionId") long auctionId,
+                              @PathVariable("maxAmount") long maxAmount,
+                              @PathVariable("bidder") String bidder){
+        return auctionService.firstOffer(auctionId, maxAmount, bidder);
+    }
+
     @GetMapping("/auctionss")
     public List<Auction> allByOrderBy(){
         return auctionService.recoverAllOrderByPublicationDate();

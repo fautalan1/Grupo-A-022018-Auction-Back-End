@@ -145,7 +145,7 @@ public class Auction  {
         return fiveMinutesBeforeTheCurrent.compareTo(this.finishDate) < 0;
     }
 
-    private long fivePercentMoreThanTheCurrentPrice() {
+    public long fivePercentMoreThanTheCurrentPrice() {
         return (this.price * 5 / 100) + this.price;
     }
 
@@ -158,6 +158,7 @@ public class Auction  {
         }
         if(this.automaticOfferUser != null &&
            !bidder.equals(this.emailAuthor) &&
+           !bidder.equals(this.automaticOfferUser) &&
            this.fivePercentMoreThanTheCurrentPrice() <= this.automaticOfferAmount) {
             this.offer(this.automaticOfferUser);
         }
@@ -193,5 +194,11 @@ public class Auction  {
 
     private Bidder getLastBidder() {
         return this.bidders.get(this.bidders.size()-1);
+    }
+
+    public void firstOffer(String bidder, long maxAmount) {
+        setAutomaticOfferAmount(maxAmount);
+        setAutomaticOfferUser(bidder);
+        this.offer(bidder);
     }
 }
