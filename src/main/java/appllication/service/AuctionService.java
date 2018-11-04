@@ -62,7 +62,6 @@ public class AuctionService {
     @Transactional
     public List<Auction> recoverAll(){ return auctionDao.findAll();  }
 
-
     private boolean isMaxAuctionInProgress(String anEmailAuthor){
         List<Auction> someAuctionNewAndInProgress = auctionDao.findAllByEmailAuthor(anEmailAuthor).
                                                             stream().
@@ -84,6 +83,7 @@ public class AuctionService {
         return anAuction.get();
     }
 
+    @Transactional
     public Auction offer(long auctionId, String bidder) {
         Auction auction = recoverById(auctionId);
         if(auction.isAuthor(bidder)){
@@ -92,9 +92,9 @@ public class AuctionService {
         if(auction.isTheLastBidder(bidder)){
             throw new LastBidderException("It is last bidder");
         }
-//        if(!auction.isInProgress()){
-//            throw new NotProgressException("Auction is not in progress");
-//        }
+        if(!auction.isInProgress()){
+            throw new NotProgressException("Auction is not in progress");
+        }
         auction.offer(bidder);
         return update(auction);
     }
@@ -103,6 +103,7 @@ public class AuctionService {
         return auctionDao.findByOrderByPublicationDateAsc(PageRequest.of(1,3));
     }
 
+    @Transactional
     public Auction firstOffer(long auctionId, long maxAmount, String bidder) {
         Auction auction = recoverById(auctionId);
         if(auction.isAuthor(bidder)){
@@ -114,9 +115,9 @@ public class AuctionService {
         if(auction.fivePercentMoreThanTheCurrentPrice() > maxAmount){
             throw new LastBidderException(""); // change exception
         }
-//        if(!auction.isInProgress()){
-//            throw new NotProgressException("Auction is not in progress");
-//        }
+        if(!auction.isInProgress()){
+            throw new NotProgressException("Auction is not in progress");
+        }
         auction.firstOffer(bidder, maxAmount);
         return update(auction);
     }
