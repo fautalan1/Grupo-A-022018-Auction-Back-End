@@ -49,4 +49,15 @@ public class AuctionController {
     public List<Auction> allByOrderBy(){
         return auctionService.recoverAllOrderByPublicationDate();
     }
+
+
+    @GetMapping("/auction/{title}/{description}")
+    public List<Auction> allBy(@PathVariable("title") String title, @PathVariable String description){
+        return auctionService.recoverAllByTitleLikeAndDescriptionLike(title,description);
+    }
+
+    @GetMapping("/auction/for/{title}")
+    public List<Auction> allBy(@PathVariable("title") String title){
+        return auctionService.recoverAllByTitleLike(title);
+    }
 }

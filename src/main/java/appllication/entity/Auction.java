@@ -36,7 +36,7 @@ public class Auction  {
     private long price;
     private long automaticOfferAmount;
 
-    @Size(min = 10, max = 50,
+    @Size(min = 5, max = 50,
             message = " title must be between 10 and 50 characters")
     private String title;
 
