@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 import appllication.service.AuctionService;
-
 import javax.validation.Valid;
 import java.util.List;
 
@@ -20,29 +19,20 @@ public class AuctionController {
         this.auctionService = auctionService;
     }
 
+    /* Get
+     *
+     *
+     *
+     * */
+
     @GetMapping("/auctions")
     public List<Auction> all(){
         return auctionService.recoverAll();
     }
 
-    @GetMapping("/auction/{name}")
-    public Auction recover(@PathVariable("name") String name ){
-        return auctionService.recover(name);
-    }
-
-    @PutMapping("/auction")
-    public Auction add(@RequestBody @Valid Auction anAuction){
-        return auctionService.create(anAuction);
-    }
-
-    @PostMapping("/auction")
-    public Auction update(@RequestBody @Valid Auction anAuction){
-        return auctionService.update(anAuction);
-    }
-
-    @PostMapping("/auction/{auctionId}/offer/{bidder}")
-    public Auction offer(@PathVariable("auctionId") long auctionId, @PathVariable("bidder") String bidder){
-        return auctionService.offer(auctionId, bidder);
+    @GetMapping("/auction/{emailAuthor}")
+    public Auction recover(@PathVariable("emailAuthor") String emailAuthor ){
+        return auctionService.recover(emailAuthor);
     }
 
     @GetMapping("/auctions/recentAuctions")
@@ -60,4 +50,51 @@ public class AuctionController {
     public List<Auction> allBy(@PathVariable("title") String title){
         return auctionService.recoverAllByTitleLike(title);
     }
+
+    /**********************************************************************************/
+
+
+    /* Put
+     *
+     *
+     *
+     * */
+
+    @PutMapping("/auction")
+    public Auction add(@RequestBody @Valid Auction anAuction){
+        return auctionService.create(anAuction);
+    }
+
+    /**********************************************************************************/
+
+    /* Post
+     *
+     *
+     *
+     * */
+
+    @PostMapping("/auction")
+    public Auction update(@RequestBody @Valid Auction anAuction){
+        return auctionService.update(anAuction);
+    }
+
+    @PostMapping("/auction/{auctionId}/offer/{bidder}")
+    public Auction offer(@PathVariable("auctionId") long auctionId, @PathVariable("bidder") String bidder){
+        return auctionService.offer(auctionId, bidder);
+    }
+
+    /**********************************************************************************/
+
+    /* Delete
+     *
+     *
+     *
+     * */
+    @DeleteMapping("/auction/delete/{id}")
+    public void delete(@PathVariable long id){
+        auctionService.delete(id);
+    }
+
+
+
 }

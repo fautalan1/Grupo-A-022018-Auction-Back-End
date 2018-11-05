@@ -9,12 +9,17 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import appllication.repository.AuctionDao;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpClientErrorException;
 
+import javax.servlet.http.HttpServletResponse;
 import java.time.*;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.CONFLICT;
 
 @Component("auctionService")
 public class AuctionService {
@@ -110,5 +115,25 @@ public class AuctionService {
 
     public List<Auction> recoverAllByTitleLike(String title){
         return auctionDao.findAllByTitleLike(title);
+    }
+
+    public void delete(long id) {
+        Optional<Auction> anAuctionOption = Optional.ofNullable(auctionDao.getOne(id));
+
+        if(! anAuctionOption.isPresent()) {
+            throw new HttpClientErrorException(BAD_REQUEST, "Not exist Auction with" + id);
+        }
+        Auction anyAuction = anAuctionOption.get();
+
+        if(anyAuction.isInProgress()){
+            throw new HttpClientErrorException(CONFLICT,"Auction is in progress");
+        }
+
+        if(anyAuction.isFinished()){
+            throw new HttpClientErrorException(CONFLICT,"Auction is in isFinished");
+        }
+
+        auctionDao.deleteById(id);
+
     }
 }
