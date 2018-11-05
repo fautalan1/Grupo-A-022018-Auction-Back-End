@@ -45,8 +45,8 @@ public class AuctionController {
         return auctionService.offer(auctionId, bidder);
     }
 
-    @GetMapping("/auctionss")
-    public List<Auction> allByOrderBy(){
+    @GetMapping("/auctions/recentAuctions")
+    public List<Auction> recentAuctions(){
         return auctionService.recoverAllOrderByPublicationDate();
     }
 

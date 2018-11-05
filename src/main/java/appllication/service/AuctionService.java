@@ -101,7 +101,7 @@ public class AuctionService {
     }
 
     public List<Auction> recoverAllOrderByPublicationDate(){
-        return auctionDao.findByOrderByPublicationDateAsc(PageRequest.of(1,3));
+        return auctionDao.findByOrderByPublicationDateAsc();
     }
 
     public List<Auction> recoverAllByTitleLikeAndDescriptionLike(String title, String description){

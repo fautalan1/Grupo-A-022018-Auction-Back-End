@@ -22,7 +22,8 @@ public interface AuctionDao extends JpaRepository<Auction, Long>{
     Auction        findByEmailAuthor(String anEmailAuthor);
     List<Auction>  findAllByEmailAuthor(String anEmailAuthor);
 
-    List<Auction>  findByOrderByPublicationDateAsc(Pageable pageable);
+    List<Auction>  findByOrderByPublicationDateAsc();
+
     @Query(value = "select a from Auction a where a.title like concat('%', :titleToFind,'%') and a.description like (concat('%',:description,'%'))")
     List<Auction> findAllByTitleLikeAndDescriptionLike(@Param("titleToFind") String title, @Param("description") String description);
 
