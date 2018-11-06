@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import appllication.service.AuctionService;
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -49,6 +50,17 @@ public class AuctionController {
     @GetMapping("/auction/for/{title}")
     public List<Auction> allBy(@PathVariable("title") String title){
         return auctionService.recoverAllByTitleLike(title);
+    }
+
+
+    @GetMapping("/auction/toFinish")
+    public List<Auction> toFinish(){
+        return auctionService.recoverAuctionsToFinish();
+    }
+
+    @GetMapping("/auction/toFinishBetween")
+    public List<Auction> toFinishBetween(){
+        return auctionService.recoverAuctionsToFinishBetween(LocalDateTime.now(),LocalDateTime.now().plusDays(1));
     }
 
     /**********************************************************************************/

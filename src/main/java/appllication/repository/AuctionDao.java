@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,12 +23,20 @@ public interface AuctionDao extends JpaRepository<Auction, Long>{
     Auction        findByEmailAuthor(String anEmailAuthor);
     List<Auction>  findAllByEmailAuthor(String anEmailAuthor);
 
-    List<Auction>  findByOrderByPublicationDateAsc();
+    ///mayor al finish
+    List<Auction> findByFinishDateLessThanOrderByFinishDate(LocalDateTime finishDate);
+
+
+    List<Auction>  findByPublicationDateGreaterThanOrderByPublicationDate(LocalDateTime publicationDate);
 
     @Query(value = "select a from Auction a where a.title like concat('%', :titleToFind,'%') and a.description like (concat('%',:description,'%'))")
     List<Auction> findAllByTitleLikeAndDescriptionLike(@Param("titleToFind") String title, @Param("description") String description);
 
     @Query(value = "select a from Auction a where a.title like concat('%', :titleToFind,'%')")
     List<Auction> findAllByTitleLike(@Param("titleToFind") String title);
+
+
+    List<Auction> findAllByFinishDateBetween(LocalDateTime aDateTime, LocalDateTime otherDateTime);
+
 
 }

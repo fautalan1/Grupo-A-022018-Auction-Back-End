@@ -93,6 +93,19 @@ public class ApplicationRestFull {
 				.whitDescription("----Tomos originales toda saga z----")
 				.whitTitle("----Manga dragon ball z----")
 				.whitPublicationDate(LocalDateTime.now())
+				.whitFinishDate(LocalDateTime.now().plusDays(1))
+				.whitInitialFinishDate(LocalDateTime.now().plusDays(1))
+				.get()
+		);
+
+		auctionDao.save(anyBuilderAuction
+				.anyAuction()
+				.whitEmailAuthor("locomotion@Gmail.com")
+				.whitDescription("----Todas las videos cintas que quedaron de el famoso canal locomotion de anime----")
+				.whitTitle("----coleccion locomotion----")
+				.whitPublicationDate(LocalDateTime.now())
+				.whitFinishDate(LocalDateTime.now().plusDays(1))
+				.whitInitialFinishDate(LocalDateTime.now().plusDays(1))
 				.get()
 		);
 

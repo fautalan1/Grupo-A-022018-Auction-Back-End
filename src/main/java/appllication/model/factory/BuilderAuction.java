@@ -46,6 +46,7 @@ public class BuilderAuction {
         anyAction.setInitialFinishDate(aTime);
         return this;
     }
+
     public BuilderAuction whitAutomaticOfferAmount(long aAmount){
         anyAction.setAutomaticOfferAmount(aAmount);
         return this;

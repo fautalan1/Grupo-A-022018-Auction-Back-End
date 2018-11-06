@@ -5,13 +5,11 @@ import appllication.model.Exception.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import appllication.repository.AuctionDao;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 
-import javax.servlet.http.HttpServletResponse;
 import java.time.*;
 
 import java.util.List;
@@ -51,7 +49,6 @@ public class AuctionService {
     public Auction update(Auction anAuction){
         auctionDao.save(anAuction);
         return anAuction;
-
     }
 
     @Transactional
@@ -81,6 +78,7 @@ public class AuctionService {
         return Duration.between(aLocalDateTime, otherLocalDateTime).abs().toDays() < aDay;
     }
 
+    @Transactional
     public Auction recoverById(long auctionId) {
         Optional<Auction> anAuction = auctionDao.findById(auctionId);
         if(! anAuction.isPresent()){
@@ -89,6 +87,7 @@ public class AuctionService {
         return anAuction.get();
     }
 
+    @Transactional
     public Auction offer(long auctionId, String bidder) {
         Auction auction = recoverById(auctionId);
         if(auction.isAuthor(bidder)){
@@ -105,24 +104,30 @@ public class AuctionService {
         return update(auction);
     }
 
+
+    @Transactional
+
     public List<Auction> recoverAllOrderByPublicationDate(){
-        return auctionDao.findByOrderByPublicationDateAsc();
+        return auctionDao.findByPublicationDateGreaterThanOrderByPublicationDate(LocalDateTime.now());
     }
+    @Transactional
 
     public List<Auction> recoverAllByTitleLikeAndDescriptionLike(String title, String description){
         return auctionDao.findAllByTitleLikeAndDescriptionLike(title,description);
     }
-
+    @Transactional
     public List<Auction> recoverAllByTitleLike(String title){
         return auctionDao.findAllByTitleLike(title);
     }
 
+    @Transactional
     public void delete(long id) {
         Optional<Auction> anAuctionOption = Optional.ofNullable(auctionDao.getOne(id));
 
         if(! anAuctionOption.isPresent()) {
             throw new HttpClientErrorException(BAD_REQUEST, "Not exist Auction with" + id);
         }
+
         Auction anyAuction = anAuctionOption.get();
 
         if(anyAuction.isInProgress()){
@@ -135,5 +140,15 @@ public class AuctionService {
 
         auctionDao.deleteById(id);
 
+    }
+
+    @Transactional
+    public List<Auction> recoverAuctionsToFinish(){
+        return auctionDao.findByFinishDateLessThanOrderByFinishDate(LocalDateTime.now());
+    }
+
+    @Transactional
+    public List<Auction> recoverAuctionsToFinishBetween(LocalDateTime aDateTime , LocalDateTime otherDateTime){
+        return auctionDao.findAllByFinishDateBetween(aDateTime,otherDateTime);
     }
 }
