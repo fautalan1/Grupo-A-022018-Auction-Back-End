@@ -26,9 +26,9 @@ public class AuctionController {
      *
      * */
 
-    @GetMapping("/auctions")
-    public List<Auction> all(){
-        return auctionService.recoverAll();
+    @GetMapping("/auctions/{index}/{size}")
+    public List<Auction> all(@PathVariable int index, @PathVariable int size){
+        return auctionService.recoverAll(index,size);
     }
 
     @GetMapping("/auction/{emailAuthor}")
@@ -36,31 +36,32 @@ public class AuctionController {
         return auctionService.recover(emailAuthor);
     }
 
-    @GetMapping("/auctions/recentAuctions")
-    public List<Auction> recentAuctions(){
-        return auctionService.recoverAllOrderByPublicationDate();
+    @GetMapping("/auctions/recentAuctions/{index}/{size}")
+    public List<Auction> recentAuctions(@PathVariable int index, @PathVariable int size){
+        return auctionService.recoverAllOrderByPublicationDate(index,size);
     }
 
 
-    @GetMapping("/auction/{title}/{description}")
-    public List<Auction> allBy(@PathVariable("title") String title, @PathVariable String description){
-        return auctionService.recoverAllByTitleLikeAndDescriptionLike(title,description);
+    @GetMapping("/auction/{title}/{description}/{index}/{size}")
+    public List<Auction> allBy(@PathVariable("title") String title, @PathVariable String description,
+                               @PathVariable int index, @PathVariable int size){
+        return auctionService.recoverAllByTitleLikeAndDescriptionLike(title,description,index,size);
     }
 
-    @GetMapping("/auction/for/{title}")
-    public List<Auction> allBy(@PathVariable("title") String title){
-        return auctionService.recoverAllByTitleLike(title);
+    @GetMapping("/auction/for/{title}/{index}/{size}")
+    public List<Auction> allBy(@PathVariable("title") String title, @PathVariable int index, @PathVariable int size){
+        return auctionService.recoverAllByTitleLike(title,index,size);
     }
 
 
-    @GetMapping("/auction/toFinish")
-    public List<Auction> toFinish(){
-        return auctionService.recoverAuctionsToFinish();
+    @GetMapping("/auction/toFinish/{index}/{size}")
+    public List<Auction> toFinish(@PathVariable int index, @PathVariable int size){
+        return auctionService.recoverAuctionsToFinish(index,size);
     }
 
-    @GetMapping("/auction/toFinishBetween")
-    public List<Auction> toFinishBetween(){
-        return auctionService.recoverAuctionsToFinishBetween(LocalDateTime.now(),LocalDateTime.now().plusDays(1));
+    @GetMapping("/auction/toFinishBetween/{index}/{size}")
+    public List<Auction> toFinishBetween(@PathVariable int index, @PathVariable int size){
+        return auctionService.recoverAuctionsToFinishBetween(LocalDateTime.now(),LocalDateTime.now().plusDays(1),index,size);
     }
 
     /**********************************************************************************/

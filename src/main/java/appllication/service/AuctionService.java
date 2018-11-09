@@ -5,6 +5,8 @@ import appllication.model.Exception.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import appllication.repository.AuctionDao;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,9 +63,6 @@ public class AuctionService {
         return anAuction.get();
     }
 
-    @Transactional
-    public List<Auction> recoverAll(){ return auctionDao.findAll();  }
-
 
     private boolean isMaxAuctionInProgress(String anEmailAuthor){
         List<Auction> someAuctionNewAndInProgress = auctionDao.findAllByEmailAuthor(anEmailAuthor).
@@ -106,19 +105,34 @@ public class AuctionService {
 
 
     @Transactional
+    public List<Auction> recoverAll(int index ,int size){
+        return auctionDao.findAll(PageRequest.of(index,size)).getContent(); }
 
-    public List<Auction> recoverAllOrderByPublicationDate(){
-        return auctionDao.findByPublicationDateGreaterThanOrderByPublicationDate(LocalDateTime.now());
+    @Transactional
+    public List<Auction> recoverAllOrderByPublicationDate(int index ,int size){
+        return auctionDao.findByPublicationDateGreaterThanOrderByPublicationDateDesc(PageRequest.of(index,size),LocalDateTime.now());
     }
     @Transactional
 
-    public List<Auction> recoverAllByTitleLikeAndDescriptionLike(String title, String description){
-        return auctionDao.findAllByTitleLikeAndDescriptionLike(title,description);
+    public List<Auction> recoverAllByTitleLikeAndDescriptionLike(String title, String description, int index, int size){
+        return auctionDao.findAllByTitleLikeAndDescriptionLike(title,description,PageRequest.of(index,size));
     }
     @Transactional
-    public List<Auction> recoverAllByTitleLike(String title){
-        return auctionDao.findAllByTitleLike(title);
+    public List<Auction> recoverAllByTitleLike(String title,int index,int size){
+        return auctionDao.findAllByTitleLike(title,PageRequest.of(index,size));
     }
+
+    @Transactional
+    public List<Auction> recoverAuctionsToFinish(int index,int size){
+        return auctionDao.findByFinishDateLessThanOrderByFinishDate(LocalDateTime.now(),PageRequest.of(index,size));
+    }
+
+    @Transactional
+    public List<Auction> recoverAuctionsToFinishBetween(LocalDateTime aDateTime , LocalDateTime otherDateTime,int index,int size){
+        return auctionDao.findAllByFinishDateBetween(aDateTime,otherDateTime,PageRequest.of(index,size));
+    }
+
+
 
     @Transactional
     public void delete(long id) {
@@ -142,13 +156,5 @@ public class AuctionService {
 
     }
 
-    @Transactional
-    public List<Auction> recoverAuctionsToFinish(){
-        return auctionDao.findByFinishDateLessThanOrderByFinishDate(LocalDateTime.now());
-    }
 
-    @Transactional
-    public List<Auction> recoverAuctionsToFinishBetween(LocalDateTime aDateTime , LocalDateTime otherDateTime){
-        return auctionDao.findAllByFinishDateBetween(aDateTime,otherDateTime);
-    }
 }

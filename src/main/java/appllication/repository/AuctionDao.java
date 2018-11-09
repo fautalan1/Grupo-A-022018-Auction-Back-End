@@ -17,26 +17,22 @@ import java.util.Optional;
 @Component("auctionDao")
 public interface AuctionDao extends JpaRepository<Auction, Long>{
 
-
-    //Optional<Auction> findAllByEmailAuthor(String an);
-
     Auction        findByEmailAuthor(String anEmailAuthor);
     List<Auction>  findAllByEmailAuthor(String anEmailAuthor);
 
-    ///mayor al finish
-    List<Auction> findByFinishDateLessThanOrderByFinishDate(LocalDateTime finishDate);
+    List<Auction> findByFinishDateLessThanOrderByFinishDate(LocalDateTime finishDate,Pageable pageable);
 
 
-    List<Auction>  findByPublicationDateGreaterThanOrderByPublicationDate(LocalDateTime publicationDate);
+    List<Auction>  findByPublicationDateGreaterThanOrderByPublicationDateDesc(Pageable pageable,LocalDateTime publicationDate);
 
     @Query(value = "select a from Auction a where a.title like concat('%', :titleToFind,'%') and a.description like (concat('%',:description,'%'))")
-    List<Auction> findAllByTitleLikeAndDescriptionLike(@Param("titleToFind") String title, @Param("description") String description);
+    List<Auction> findAllByTitleLikeAndDescriptionLike(@Param("titleToFind") String title, @Param("description") String description,Pageable pageable);
 
     @Query(value = "select a from Auction a where a.title like concat('%', :titleToFind,'%')")
-    List<Auction> findAllByTitleLike(@Param("titleToFind") String title);
+    List<Auction> findAllByTitleLike(@Param("titleToFind") String title,Pageable pageable);
 
 
-    List<Auction> findAllByFinishDateBetween(LocalDateTime aDateTime, LocalDateTime otherDateTime);
+    List<Auction> findAllByFinishDateBetween(LocalDateTime aDateTime, LocalDateTime otherDateTime,Pageable pageable);
 
 
 }
