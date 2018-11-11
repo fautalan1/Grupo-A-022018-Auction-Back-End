@@ -98,8 +98,26 @@ public class AuctionService {
         if(!auction.isInProgress()){
             throw new NotProgressException("Auction is not in progress");
         }
-
         auction.offer(bidder);
+        return update(auction);
+    }
+
+    @Transactional
+    public Auction firstOffer(long auctionId, long maxAmount, String bidder) {
+        Auction auction = recoverById(auctionId);
+        if(auction.isAuthor(bidder)){
+            throw new BidderIsTheAuctionAuthorException("Bidder is auction author");
+        }
+        if(!auction.getBidders().isEmpty()){
+            throw new LastBidderException(""); // change exception
+        }
+        if(auction.fivePercentMoreThanTheCurrentPrice() > maxAmount){
+            throw new LastBidderException(""); // change exception
+        }
+        if(!auction.isInProgress()){
+            throw new NotProgressException("Auction is not in progress");
+        }
+        auction.firstOffer(bidder, maxAmount);
         return update(auction);
     }
 

@@ -28,10 +28,11 @@ public class Bidder {
 
     public Bidder(){}
 
-    public Bidder(String bidder, Auction auction, LocalDateTime time) {
+    Bidder(String bidder, Auction auction, long newPrice, LocalDateTime time) {
         setAuthor(bidder);
         setAuction(auction);
         setPublicationDate(time);
+        setPrice(newPrice);
     }
 
     public long getId() {
