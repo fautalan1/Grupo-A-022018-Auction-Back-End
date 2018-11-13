@@ -17,7 +17,10 @@ import java.util.Optional;
 @Component("auctionDao")
 public interface AuctionDao extends JpaRepository<Auction, Long>{
 
+
     Auction        findByEmailAuthor(String anEmailAuthor);
+
+
     List<Auction>  findAllByEmailAuthor(String anEmailAuthor);
 
     List<Auction> findByFinishDateLessThanOrderByFinishDate(LocalDateTime finishDate,Pageable pageable);

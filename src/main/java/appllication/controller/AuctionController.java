@@ -34,6 +34,12 @@ public class AuctionController {
     }
 
     @LogExecutionTime
+    @GetMapping("/auction/recover/{id}")
+    public Auction recover(@PathVariable("id") long id ){
+        return auctionService.recoverById(id);
+    }
+
+    @LogExecutionTime
     @GetMapping("/auction/{emailAuthor}")
     public Auction recover(@PathVariable("emailAuthor") String emailAuthor ){
         return auctionService.recover(emailAuthor);
