@@ -5,6 +5,7 @@ import appllication.model.Exception.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
@@ -123,30 +124,30 @@ public class AuctionService {
 
 
     @Transactional
-    public List<Auction> recoverAll(int index ,int size){
-        return auctionDao.findAll(PageRequest.of(index,size)).getContent(); }
+    public Page<Auction> recoverAll(int index , int size){
+        return auctionDao.findAll(PageRequest.of(index,size));}
 
     @Transactional
-    public List<Auction> recoverAllOrderByPublicationDate(int index ,int size){
+    public  Page<Auction> recoverAllOrderByPublicationDate(int index ,int size){
         return auctionDao.findByPublicationDateGreaterThanOrderByPublicationDateDesc(PageRequest.of(index,size),LocalDateTime.now());
     }
     @Transactional
 
-    public List<Auction> recoverAllByTitleLikeAndDescriptionLike(String title, String description, int index, int size){
+    public Page<Auction> recoverAllByTitleLikeAndDescriptionLike(String title, String description, int index, int size){
         return auctionDao.findAllByTitleLikeAndDescriptionLike(title,description,PageRequest.of(index,size));
     }
     @Transactional
-    public List<Auction> recoverAllByTitleLike(String title,int index,int size){
+    public Page<Auction> recoverAllByTitleLike(String title,int index,int size){
         return auctionDao.findAllByTitleLike(title,PageRequest.of(index,size));
     }
 
     @Transactional
-    public List<Auction> recoverAuctionsToFinish(int index,int size){
+    public Page<Auction> recoverAuctionsToFinish(int index,int size){
         return auctionDao.findByFinishDateLessThanOrderByFinishDate(LocalDateTime.now(),PageRequest.of(index,size));
     }
 
     @Transactional
-    public List<Auction> recoverAuctionsToFinishBetween(LocalDateTime aDateTime , LocalDateTime otherDateTime,int index,int size){
+    public Page<Auction> recoverAuctionsToFinishBetween(LocalDateTime aDateTime , LocalDateTime otherDateTime,int index,int size){
         return auctionDao.findAllByFinishDateBetween(aDateTime,otherDateTime,PageRequest.of(index,size));
     }
 

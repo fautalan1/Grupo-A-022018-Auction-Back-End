@@ -1,6 +1,7 @@
 package appllication.repository;
 
 import appllication.entity.Auction;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -23,19 +24,19 @@ public interface AuctionDao extends JpaRepository<Auction, Long>{
 
     List<Auction>  findAllByEmailAuthor(String anEmailAuthor);
 
-    List<Auction> findByFinishDateLessThanOrderByFinishDate(LocalDateTime finishDate,Pageable pageable);
+    Page<Auction> findByFinishDateLessThanOrderByFinishDate(LocalDateTime finishDate,Pageable pageable);
 
 
-    List<Auction>  findByPublicationDateGreaterThanOrderByPublicationDateDesc(Pageable pageable,LocalDateTime publicationDate);
+    Page<Auction> findByPublicationDateGreaterThanOrderByPublicationDateDesc(Pageable pageable, LocalDateTime publicationDate);
 
     @Query(value = "select a from Auction a where a.title like concat('%', :titleToFind,'%') and a.description like (concat('%',:description,'%'))")
-    List<Auction> findAllByTitleLikeAndDescriptionLike(@Param("titleToFind") String title, @Param("description") String description,Pageable pageable);
+    Page<Auction> findAllByTitleLikeAndDescriptionLike(@Param("titleToFind") String title, @Param("description") String description,Pageable pageable);
 
     @Query(value = "select a from Auction a where a.title like concat('%', :titleToFind,'%')")
-    List<Auction> findAllByTitleLike(@Param("titleToFind") String title,Pageable pageable);
+    Page<Auction> findAllByTitleLike(@Param("titleToFind") String title,Pageable pageable);
 
 
-    List<Auction> findAllByFinishDateBetween(LocalDateTime aDateTime, LocalDateTime otherDateTime,Pageable pageable);
+    Page<Auction> findAllByFinishDateBetween(LocalDateTime aDateTime, LocalDateTime otherDateTime,Pageable pageable);
 
 
 }
