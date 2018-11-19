@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import appllication.repository.AuctionDao;
 import org.springframework.transaction.annotation.Transactional;
@@ -110,10 +109,10 @@ public class AuctionService {
             throw new BidderIsTheAuctionAuthorException("Bidder is auction author");
         }
         if(!auction.getBidders().isEmpty()){
-            throw new LastBidderException(""); // change exception
+            throw new LastBidderException("Has already been offered"); // change exception
         }
         if(auction.fivePercentMoreThanTheCurrentPrice() > maxAmount){
-            throw new LastBidderException(""); // change exception
+            throw new LastBidderException("Insufficient minimum price"); // change exception
         }
         if(!auction.isInProgress()){
             throw new NotProgressException("Auction is not in progress");
@@ -121,7 +120,6 @@ public class AuctionService {
         auction.firstOffer(bidder, maxAmount);
         return update(auction);
     }
-
 
     @Transactional
     public Page<Auction> recoverAll(int index , int size){
@@ -150,8 +148,6 @@ public class AuctionService {
     public Page<Auction> recoverAuctionsToFinishBetween(LocalDateTime aDateTime , LocalDateTime otherDateTime,int index,int size){
         return auctionDao.findAllByFinishDateBetween(aDateTime,otherDateTime,PageRequest.of(index,size));
     }
-
-
 
     @Transactional
     public void delete(long id) {

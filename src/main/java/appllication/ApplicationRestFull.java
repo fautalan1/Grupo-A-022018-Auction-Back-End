@@ -44,9 +44,11 @@ public class ApplicationRestFull {
 		auctionDao.save(
 				anyBuilderAuction
 				.anyAuction()
-				.whitEmailAuthor("victor@Gmail.com")
-				.whitDescription("----El mejor juego de play(eso dicen)----")
-				.whitTitle("----God of war----")
+				.withEmailAuthor("victor@Gmail.com")
+				.withDescription("----El mejor juego de play(eso dicen)----")
+				.withTitle("God of war")
+				.withPrice(200)
+                .withPhoto("https://www.crystalcommerce.com/wp-content/uploads/2018/09/square_gow4-notxt.jpg")
 				.get()
 		);
 
@@ -54,26 +56,32 @@ public class ApplicationRestFull {
 		auctionDao.save(
 				anyBuilderAuction
 				.anyAuction()
-				.whitEmailAuthor("gabiAvatar@Gmail.com")
-				.whitDescription("----Set completo del avatar cubre libro 1 2 3 4 ----")
-				.whitTitle("----Set Avatar----")
+				.withEmailAuthor("gabiAvatar@Gmail.com")
+				.withDescription("----Set completo del avatar cubre libro 1 2 3 4 ----")
+				.withTitle("Set Avatar")
+				.withPrice(500)
+                .withPhoto("https://static1.squarespace.com/static/547286fee4b0d546b9cd9ef6/t/579eb0eee58c625407399e3d/1501454327999/")
 				.get()
 		);
 
 		auctionDao.save(
 				anyBuilderAuction
 				.anyAuction()
-				.whitEmailAuthor("ivar@Gmail.com")
-				.whitDescription("----Waifusssssssssssss japonesa 100% original no fake----")
-				.whitTitle("----Rica waifu----")
+				.withEmailAuthor("ivar@Gmail.com")
+				.withDescription("----Waifusssssssssssss japonesa 100% original no fake----")
+				.withTitle("Rica waifu")
+				.withPrice(50)
+                .withPhoto("https://www.heypoorplayer.com/wp-content/uploads/2018/02/Segment_0001.jpg")
 				.get()
 		);
 		auctionDao.save(
 				anyBuilderAuction
 				.anyAuction()
-				.whitEmailAuthor("n.autalan@Gmail.com")
-				.whitDescription("----100% original made in argentina papa----")
-				.whitTitle("----Armadura carton Megaman----")
+				.withEmailAuthor("n.autalan@Gmail.com")
+				.withDescription("----100% original made in argentina papa----")
+				.withTitle("Megaman")
+				.withPrice(2000)
+                .withPhoto("https://amp.businessinsider.com/images/5b928a6864dce81a008b5a0c-750-396.jpg")
 				.get()
 		);
 		//*InProgres*//
@@ -81,31 +89,36 @@ public class ApplicationRestFull {
 		auctionDao.save(
 				anyBuilderAuction
 				.anyAuction()
-				.whitEmailAuthor("rukia@Gmail.com")
-				.whitDescription("----Oni-chan-Baka----")
-				.whitTitle("----Neko onichan----")
-				.whitPublicationDate(LocalDateTime.now())
+				.withEmailAuthor("rukia@Gmail.com")
+				.withDescription("-----Dragon Ball FighterZ----------")
+				.withTitle("FighterZ")
+				.withPublicationDate(LocalDateTime.now())
+                .withPhoto("https://icdn9.digitaltrends.com/image/dragon-ball-fighterz-review-1104-1920x1080.jpg")
 				.get()
 		);
 		auctionDao.save(anyBuilderAuction
 				.anyAuction()
-				.whitEmailAuthor("waifu@Gmail.com")
-				.whitDescription("----Tomos originales toda saga z----")
-				.whitTitle("----Manga dragon ball z----")
-				.whitPublicationDate(LocalDateTime.now())
-				.whitFinishDate(LocalDateTime.now().plusDays(1))
-				.whitInitialFinishDate(LocalDateTime.now().plusDays(1))
+				.withEmailAuthor("waifu@Gmail.com")
+				.withDescription("Manga Dragon Ball")
+				.withTitle("----Manga dragon ball z----")
+                .withPrice(100)
+                .withPhoto("https://cdn.hobbyconsolas.com/sites/navi.axelspringer.es/public/styles/main_element/public/filefield_paths/dragonballdvd2.jpg?itok=uO3HI59b")
+				.withPublicationDate(LocalDateTime.now())
+				.withFinishDate(LocalDateTime.now().plusDays(1))
+				.withInitialFinishDate(LocalDateTime.now().plusDays(1))
 				.get()
 		);
 
 		auctionDao.save(anyBuilderAuction
 				.anyAuction()
-				.whitEmailAuthor("locomotion@Gmail.com")
-				.whitDescription("----Todas las videos cintas que quedaron de el famoso canal locomotion de anime----")
-				.whitTitle("----coleccion locomotion----")
-				.whitPublicationDate(LocalDateTime.now())
-				.whitFinishDate(LocalDateTime.now().plusDays(1))
-				.whitInitialFinishDate(LocalDateTime.now().plusDays(1))
+				.withEmailAuthor("locomotion@Gmail.com")
+				.withDescription("----Todas las videos cintas que quedaron de el famoso canal locomotion de anime----")
+				.withTitle("Locomotion")
+                .withPrice(200)
+                .withPhoto("http://anime.es/wp-content/uploads/2015/10/NGEvangelion-770x433.jpg")
+				.withPublicationDate(LocalDateTime.now())
+				.withFinishDate(LocalDateTime.now().plusDays(1))
+				.withInitialFinishDate(LocalDateTime.now().plusDays(1))
 				.get()
 		);
 
@@ -114,23 +127,27 @@ public class ApplicationRestFull {
 		auctionDao.save(
 				anyBuilderAuction
 				.anyAuction()
-				.whitEmailAuthor("lolo@Gmail.com")
-				.whitDescription("----Set dragon ball super villanos----")
-				.whitTitle("----Villanos dragon ball super----")
-				.whitPublicationDate(LocalDateTime.now().minusDays(5))
-				.whitFinishDate(LocalDateTime.now().minusDays(1))
-				.whitInitialFinishDate(LocalDateTime.now().minusDays(1))
+				.withEmailAuthor("lolo@Gmail.com")
+				.withDescription("Villanos DBS")
+				.withTitle("----Villanos dragon ball super----")
+                .withPrice(300)
+                .withPhoto("https://image.jimcdn.com/app/cms/image/transf/dimension=890x10000:format=png/path/s81b4791a1b7c63fb/image/i86c58e3ebe0dfc3b/version/1535480861/image.png")
+				.withPublicationDate(LocalDateTime.now().minusDays(5))
+				.withFinishDate(LocalDateTime.now().minusDays(1))
+				.withInitialFinishDate(LocalDateTime.now().minusDays(1))
 				.get()
 		);
 		auctionDao.save(
 				anyBuilderAuction
 				.anyAuction()
-				.whitEmailAuthor("kakaroto@Gmail.com")
-				.whitDescription("----Es una golondrina que puede volar comer y no hacer nada----")
-				.whitTitle("----Pepita 100% real no fake----")
-				.whitPublicationDate(LocalDateTime.now())
-				.whitFinishDate(LocalDateTime.now().minusDays(1))
-				.whitInitialFinishDate(LocalDateTime.now().minusDays(1))
+				.withEmailAuthor("kakaroto@Gmail.com")
+				.withDescription("----Es una muñeco coleccionable----")
+				.withTitle("Goku Bampresto")
+                .withPrice(900)
+                .withPhoto("https://www.ninoma.com/media/catalog/product/cache/2/image/02067325ba47ad6dbc32075e74e23f9c/n/e/new_goku_1.jpg")
+				.withPublicationDate(LocalDateTime.now())
+				.withFinishDate(LocalDateTime.now().minusDays(1))
+				.withInitialFinishDate(LocalDateTime.now().minusDays(1))
 				.get()
 		);
 
