@@ -16,6 +16,7 @@ public class UserService {
 
     private final UserDao userDao;
 
+
     @Autowired
     public UserService(@Qualifier("userDao") UserDao userDao) {
         this.userDao = userDao;
@@ -36,7 +37,6 @@ public class UserService {
     boolean emailExist(String email) {
         return userDao.findByEmail(email) != null;
     }
-
     @Transactional
     public User signIn(Login aLogin) {
         User user = userDao.findByEmail(aLogin.getEmail());
