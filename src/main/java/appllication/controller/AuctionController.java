@@ -1,8 +1,11 @@
 package appllication.controller;
 
+import appllication.annotation.LogExecutionTime;
 import appllication.entity.Auction;
+import appllication.model.RequestPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import appllication.service.AuctionService;
@@ -26,41 +29,18 @@ public class AuctionController {
      *
      * */
 
-    @GetMapping("/auctions")
-    public List<Auction> all(){
-        return auctionService.recoverAll();
+
+
+    @LogExecutionTime
+    @GetMapping("/auction/recover/{id}")
+    public Auction recover(@PathVariable("id") long id ){
+        return auctionService.recoverById(id);
     }
 
+    @LogExecutionTime
     @GetMapping("/auction/{emailAuthor}")
     public Auction recover(@PathVariable("emailAuthor") String emailAuthor ){
         return auctionService.recover(emailAuthor);
-    }
-
-    @GetMapping("/auctions/recentAuctions")
-    public List<Auction> recentAuctions(){
-        return auctionService.recoverAllOrderByPublicationDate();
-    }
-
-
-    @GetMapping("/auction/{title}/{description}")
-    public List<Auction> allBy(@PathVariable("title") String title, @PathVariable String description){
-        return auctionService.recoverAllByTitleLikeAndDescriptionLike(title,description);
-    }
-
-    @GetMapping("/auction/for/{title}")
-    public List<Auction> allBy(@PathVariable("title") String title){
-        return auctionService.recoverAllByTitleLike(title);
-    }
-
-
-    @GetMapping("/auction/toFinish")
-    public List<Auction> toFinish(){
-        return auctionService.recoverAuctionsToFinish();
-    }
-
-    @GetMapping("/auction/toFinishBetween")
-    public List<Auction> toFinishBetween(){
-        return auctionService.recoverAuctionsToFinishBetween(LocalDateTime.now(),LocalDateTime.now().plusDays(1));
     }
 
     /**********************************************************************************/
@@ -71,7 +51,7 @@ public class AuctionController {
      *
      *
      * */
-
+    @LogExecutionTime
     @PutMapping("/auction")
     public Auction add(@RequestBody @Valid Auction anAuction){
         return auctionService.create(anAuction);
@@ -84,15 +64,61 @@ public class AuctionController {
      *
      *
      * */
+    @LogExecutionTime
+    @PostMapping("/auctions")
+    public Page<Auction> all(@RequestBody @Valid RequestPage aPage){
+        return auctionService.recoverAll(aPage);
+    }
 
+
+    @LogExecutionTime
+    @PostMapping("/auctions/recentAuctions")
+    public  Page<Auction> recentAuctions(@RequestBody @Valid RequestPage aPage){
+        return auctionService.recoverAllOrderByPublicationDate(aPage);
+    }
+
+    @LogExecutionTime
+    @PostMapping("/auction/title_and_description")
+    public Page<Auction> allByTitleAndDescription(@RequestBody @Valid RequestPage aPage){
+        return auctionService.recoverAllByTitleLikeAndDescriptionLike(aPage);
+    }
+
+    @LogExecutionTime
+    @PostMapping("/auction/title")
+    public Page<Auction> allByTitle(@RequestBody @Valid RequestPage aPage){
+        return auctionService.recoverAllByTitleLike(aPage);
+    }
+
+    @LogExecutionTime
+    @PostMapping("/auction/toFinish")
+    public Page<Auction> allToFinish(@RequestBody @Valid RequestPage aPage){
+        return auctionService.recoverAuctionsToFinish(aPage);
+    }
+
+    @LogExecutionTime
+    @PostMapping("/auction/toFinishBetween")
+    public Page<Auction> allToFinishBetween(@RequestBody @Valid RequestPage aPage){
+        return auctionService.recoverAuctionsToFinishBetween(aPage);
+    }
+
+
+    @LogExecutionTime
     @PostMapping("/auction")
     public Auction update(@RequestBody @Valid Auction anAuction){
         return auctionService.update(anAuction);
     }
 
+    @LogExecutionTime
     @PostMapping("/auction/{auctionId}/offer/{bidder}")
     public Auction offer(@PathVariable("auctionId") long auctionId, @PathVariable("bidder") String bidder){
         return auctionService.offer(auctionId, bidder);
+    }
+
+    @PostMapping("/auction/first/offer/{auctionId}/{maxAmount}/{bidder}")
+    public Auction firstOffer(@PathVariable("auctionId") long auctionId,
+                              @PathVariable("maxAmount") long maxAmount,
+                              @PathVariable("bidder") String bidder){
+        return auctionService.firstOffer(auctionId, maxAmount, bidder);
     }
 
     /**********************************************************************************/
@@ -102,6 +128,7 @@ public class AuctionController {
      *
      *
      * */
+    @LogExecutionTime
     @DeleteMapping("/auction/delete/{id}")
     public void delete(@PathVariable long id){
         auctionService.delete(id);

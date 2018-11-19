@@ -3,8 +3,11 @@ package appllication.service;
 import appllication.entity.Auction;
 import appllication.model.Exception.*;
 
+import appllication.model.RequestPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import appllication.repository.AuctionDao;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,9 +64,6 @@ public class AuctionService {
         return anAuction.get();
     }
 
-    @Transactional
-    public List<Auction> recoverAll(){ return auctionDao.findAll();  }
-
 
     private boolean isMaxAuctionInProgress(String anEmailAuthor){
         List<Auction> someAuctionNewAndInProgress = auctionDao.findAllByEmailAuthor(anEmailAuthor).
@@ -99,25 +99,57 @@ public class AuctionService {
         if(!auction.isInProgress()){
             throw new NotProgressException("Auction is not in progress");
         }
-
         auction.offer(bidder);
         return update(auction);
     }
 
+    @Transactional
+    public Auction firstOffer(long auctionId, long maxAmount, String bidder) {
+        Auction auction = recoverById(auctionId);
+        if(auction.isAuthor(bidder)){
+            throw new BidderIsTheAuctionAuthorException("Bidder is auction author");
+        }
+        if(!auction.getBidders().isEmpty()){
+            throw new LastBidderException("Has already been offered"); // change exception
+        }
+        if(auction.fivePercentMoreThanTheCurrentPrice() > maxAmount){
+            throw new LastBidderException("Insufficient minimum price"); // change exception
+        }
+        if(!auction.isInProgress()){
+            throw new NotProgressException("Auction is not in progress");
+        }
+        auction.firstOffer(bidder, maxAmount);
+        return update(auction);
+    }
 
     @Transactional
+    public Page<Auction> recoverAll(RequestPage aPage){
+        return auctionDao.findAll(PageRequest.of(aPage.getIndex(),aPage.getSize()));}
 
-    public List<Auction> recoverAllOrderByPublicationDate(){
-        return auctionDao.findByPublicationDateGreaterThanOrderByPublicationDate(LocalDateTime.now());
+    @Transactional
+    public  Page<Auction> recoverAllOrderByPublicationDate(RequestPage aPage){
+        return auctionDao.findByPublicationDateGreaterThanOrderByPublicationDateDesc(PageRequest.of(aPage.getIndex(),aPage.getSize()),LocalDateTime.now());
     }
     @Transactional
 
-    public List<Auction> recoverAllByTitleLikeAndDescriptionLike(String title, String description){
-        return auctionDao.findAllByTitleLikeAndDescriptionLike(title,description);
+    public Page<Auction> recoverAllByTitleLikeAndDescriptionLike(RequestPage aPage){
+        return auctionDao.findAllByTitleLikeAndDescriptionLike(aPage.getTitle(),
+                                                        aPage.getDescription(),
+                                                        PageRequest.of(aPage.getIndex(),aPage.getSize()));
     }
     @Transactional
-    public List<Auction> recoverAllByTitleLike(String title){
-        return auctionDao.findAllByTitleLike(title);
+    public Page<Auction> recoverAllByTitleLike(RequestPage aPage){
+        return auctionDao.findAllByTitleLike(aPage.getTitle(),PageRequest.of(aPage.getIndex(),aPage.getSize()));
+    }
+
+    @Transactional
+    public Page<Auction> recoverAuctionsToFinish(RequestPage aPage){
+        return auctionDao.findByFinishDateLessThanOrderByFinishDate(LocalDateTime.now(),PageRequest.of(aPage.getIndex(),aPage.getSize()));
+    }
+
+    @Transactional
+    public Page<Auction> recoverAuctionsToFinishBetween(RequestPage aPage){
+        return auctionDao.findAllByFinishDateBetween(aPage.getFirsTime(),aPage.getSecondTime(),PageRequest.of(aPage.getIndex(),aPage.getSize()));
     }
 
     @Transactional
@@ -142,13 +174,5 @@ public class AuctionService {
 
     }
 
-    @Transactional
-    public List<Auction> recoverAuctionsToFinish(){
-        return auctionDao.findByFinishDateLessThanOrderByFinishDate(LocalDateTime.now());
-    }
 
-    @Transactional
-    public List<Auction> recoverAuctionsToFinishBetween(LocalDateTime aDateTime , LocalDateTime otherDateTime){
-        return auctionDao.findAllByFinishDateBetween(aDateTime,otherDateTime);
-    }
 }

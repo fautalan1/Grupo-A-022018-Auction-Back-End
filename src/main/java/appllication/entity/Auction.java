@@ -145,18 +145,28 @@ public class Auction  {
         return fiveMinutesBeforeTheCurrent.compareTo(this.finishDate) < 0;
     }
 
-    private long fivePercentMoreThanTheCurrentPrice() {
+    public long fivePercentMoreThanTheCurrentPrice() {
         return (this.price * 5 / 100) + this.price;
     }
 
     public void offer(String bidder) {
         long newPrice = fivePercentMoreThanTheCurrentPrice();
+        addBidder(new Bidder(bidder, this, newPrice, LocalDateTime.now()));
         setPrice(newPrice);
-        addBidder(new Bidder(bidder, this, LocalDateTime.now()));
         if(theAuctionMustBeExtended()) {
             setFinishDate(this.finishDate.plusMinutes(5));
         }
-        // verify if there is to do the offer with automatic tracking
+        if(this.automaticOfferUser != null &&
+                !bidder.equals(this.emailAuthor) &&
+                !bidder.equals(this.automaticOfferUser) &&
+                this.fivePercentMoreThanTheCurrentPrice() <= this.automaticOfferAmount) {
+            this.offer(this.automaticOfferUser);
+        }
+    }
+
+    public void firstOffer(String bidder, long maxAmount) {
+        this.automaticOffer(bidder, maxAmount);
+        this.offer(bidder);
     }
 
     private void addBidder(Bidder bidder) {

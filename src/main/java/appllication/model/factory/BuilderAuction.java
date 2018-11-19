@@ -18,31 +18,31 @@ public class BuilderAuction {
         return this;
     }
 
-    public BuilderAuction whitTitle(String title){
+    public BuilderAuction withTitle(String title){
         anyAction.setTitle(title);
         return this;
     }
 
-    public BuilderAuction whitDescription(String description){
+    public BuilderAuction withDescription(String description){
         anyAction.setDescription(description);
         return this;
     }
-    public BuilderAuction whitEmailAuthor(String emailAuthor){
+    public BuilderAuction withEmailAuthor(String emailAuthor){
         anyAction.setEmailAuthor(emailAuthor);
         return this;
     }
 
-    public BuilderAuction whitPublicationDate(LocalDateTime aTime){
+    public BuilderAuction withPublicationDate(LocalDateTime aTime){
         anyAction.setPublicationDate(aTime);
         return this;
     }
 
-    public BuilderAuction whitFinishDate(LocalDateTime aTime){
+    public BuilderAuction withFinishDate(LocalDateTime aTime){
         anyAction.setFinishDate(aTime);
         return this;
     }
 
-    public BuilderAuction whitInitialFinishDate(LocalDateTime aTime){
+    public BuilderAuction withInitialFinishDate(LocalDateTime aTime){
         anyAction.setInitialFinishDate(aTime);
         return this;
     }
@@ -58,5 +58,13 @@ public class BuilderAuction {
     }
 
 
+    public BuilderAuction withPrice(long amount) {
+        anyAction.setPrice(amount);
+        return this;
+    }
 
+    public BuilderAuction withPhoto(String photo) {
+        anyAction.setPhotos(photo);
+        return this;
+    }
 }
