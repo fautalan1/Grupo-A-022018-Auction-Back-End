@@ -3,6 +3,7 @@ package appllication.service;
 import appllication.entity.Auction;
 import appllication.model.Exception.*;
 
+import appllication.model.RequestPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
@@ -122,31 +123,33 @@ public class AuctionService {
     }
 
     @Transactional
-    public Page<Auction> recoverAll(int index , int size){
-        return auctionDao.findAll(PageRequest.of(index,size));}
+    public Page<Auction> recoverAll(RequestPage aPage){
+        return auctionDao.findAll(PageRequest.of(aPage.getIndex(),aPage.getSize()));}
 
     @Transactional
-    public  Page<Auction> recoverAllOrderByPublicationDate(int index ,int size){
-        return auctionDao.findByPublicationDateGreaterThanOrderByPublicationDateDesc(PageRequest.of(index,size),LocalDateTime.now());
+    public  Page<Auction> recoverAllOrderByPublicationDate(RequestPage aPage){
+        return auctionDao.findByPublicationDateGreaterThanOrderByPublicationDateDesc(PageRequest.of(aPage.getIndex(),aPage.getSize()),LocalDateTime.now());
     }
     @Transactional
 
-    public Page<Auction> recoverAllByTitleLikeAndDescriptionLike(String title, String description, int index, int size){
-        return auctionDao.findAllByTitleLikeAndDescriptionLike(title,description,PageRequest.of(index,size));
+    public Page<Auction> recoverAllByTitleLikeAndDescriptionLike(RequestPage aPage){
+        return auctionDao.findAllByTitleLikeAndDescriptionLike(aPage.getTitle(),
+                                                        aPage.getDescription(),
+                                                        PageRequest.of(aPage.getIndex(),aPage.getSize()));
     }
     @Transactional
-    public Page<Auction> recoverAllByTitleLike(String title,int index,int size){
-        return auctionDao.findAllByTitleLike(title,PageRequest.of(index,size));
-    }
-
-    @Transactional
-    public Page<Auction> recoverAuctionsToFinish(int index,int size){
-        return auctionDao.findByFinishDateLessThanOrderByFinishDate(LocalDateTime.now(),PageRequest.of(index,size));
+    public Page<Auction> recoverAllByTitleLike(RequestPage aPage){
+        return auctionDao.findAllByTitleLike(aPage.getTitle(),PageRequest.of(aPage.getIndex(),aPage.getSize()));
     }
 
     @Transactional
-    public Page<Auction> recoverAuctionsToFinishBetween(LocalDateTime aDateTime , LocalDateTime otherDateTime,int index,int size){
-        return auctionDao.findAllByFinishDateBetween(aDateTime,otherDateTime,PageRequest.of(index,size));
+    public Page<Auction> recoverAuctionsToFinish(RequestPage aPage){
+        return auctionDao.findByFinishDateLessThanOrderByFinishDate(LocalDateTime.now(),PageRequest.of(aPage.getIndex(),aPage.getSize()));
+    }
+
+    @Transactional
+    public Page<Auction> recoverAuctionsToFinishBetween(RequestPage aPage){
+        return auctionDao.findAllByFinishDateBetween(aPage.getFirsTime(),aPage.getSecondTime(),PageRequest.of(aPage.getIndex(),aPage.getSize()));
     }
 
     @Transactional

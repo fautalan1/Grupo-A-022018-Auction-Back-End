@@ -2,6 +2,7 @@ package appllication.controller;
 
 import appllication.annotation.LogExecutionTime;
 import appllication.entity.Auction;
+import appllication.model.RequestPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
@@ -28,11 +29,7 @@ public class AuctionController {
      *
      * */
 
-    @LogExecutionTime
-    @GetMapping("/auctions/{index}/{size}")
-    public Page<Auction> all(@PathVariable int index, @PathVariable int size){
-        return auctionService.recoverAll(index,size);
-    }
+
 
     @LogExecutionTime
     @GetMapping("/auction/recover/{id}")
@@ -44,37 +41,6 @@ public class AuctionController {
     @GetMapping("/auction/{emailAuthor}")
     public Auction recover(@PathVariable("emailAuthor") String emailAuthor ){
         return auctionService.recover(emailAuthor);
-    }
-
-    @LogExecutionTime
-    @GetMapping("/auctions/recentAuctions/{index}/{size}")
-    public  Page<Auction> recentAuctions(@PathVariable int index, @PathVariable int size){
-        return auctionService.recoverAllOrderByPublicationDate(index,size);
-    }
-
-    @LogExecutionTime
-    @GetMapping("/auction/{title}/{description}/{index}/{size}")
-    public Page<Auction> allBy(@PathVariable("title") String title, @PathVariable String description,
-                               @PathVariable int index, @PathVariable int size){
-        return auctionService.recoverAllByTitleLikeAndDescriptionLike(title,description,index,size);
-    }
-
-    @LogExecutionTime
-    @GetMapping("/auction/for/{title}/{index}/{size}")
-    public Page<Auction> allBy(@PathVariable("title") String title, @PathVariable int index, @PathVariable int size){
-        return auctionService.recoverAllByTitleLike(title,index,size);
-    }
-
-    @LogExecutionTime
-    @GetMapping("/auction/toFinish/{index}/{size}")
-    public Page<Auction> toFinish(@PathVariable int index, @PathVariable int size){
-        return auctionService.recoverAuctionsToFinish(index,size);
-    }
-
-    @LogExecutionTime
-    @GetMapping("/auction/toFinishBetween/{index}/{size}")
-    public Page<Auction> toFinishBetween(@PathVariable int index, @PathVariable int size){
-        return auctionService.recoverAuctionsToFinishBetween(LocalDateTime.now(),LocalDateTime.now().plusDays(1),index,size);
     }
 
     /**********************************************************************************/
@@ -98,6 +64,44 @@ public class AuctionController {
      *
      *
      * */
+    @LogExecutionTime
+    @PostMapping("/auctions")
+    public Page<Auction> all(@RequestBody @Valid RequestPage aPage){
+        return auctionService.recoverAll(aPage);
+    }
+
+
+    @LogExecutionTime
+    @PostMapping("/auctions/recentAuctions")
+    public  Page<Auction> recentAuctions(@RequestBody @Valid RequestPage aPage){
+        return auctionService.recoverAllOrderByPublicationDate(aPage);
+    }
+
+    @LogExecutionTime
+    @PostMapping("/auction/title_and_description")
+    public Page<Auction> allByTitleAndDescription(@RequestBody @Valid RequestPage aPage){
+        return auctionService.recoverAllByTitleLikeAndDescriptionLike(aPage);
+    }
+
+    @LogExecutionTime
+    @PostMapping("/auction/title")
+    public Page<Auction> allByTitle(@RequestBody @Valid RequestPage aPage){
+        return auctionService.recoverAllByTitleLike(aPage);
+    }
+
+    @LogExecutionTime
+    @PostMapping("/auction/toFinish")
+    public Page<Auction> allToFinish(@RequestBody @Valid RequestPage aPage){
+        return auctionService.recoverAuctionsToFinish(aPage);
+    }
+
+    @LogExecutionTime
+    @PostMapping("/auction/toFinishBetween")
+    public Page<Auction> allToFinishBetween(@RequestBody @Valid RequestPage aPage){
+        return auctionService.recoverAuctionsToFinishBetween(aPage);
+    }
+
+
     @LogExecutionTime
     @PostMapping("/auction")
     public Auction update(@RequestBody @Valid Auction anAuction){
