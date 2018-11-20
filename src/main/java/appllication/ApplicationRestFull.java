@@ -8,6 +8,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
 import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,6 +22,10 @@ import java.time.LocalDateTime;
 
 @SpringBootApplication
 @EntityScan(basePackages = {"appllication/entity"})
+@PropertySources({
+		@PropertySource("classpath:application.properties"),
+		@PropertySource("classpath:auth0.properties")
+})
 public class ApplicationRestFull {
 
     @Autowired

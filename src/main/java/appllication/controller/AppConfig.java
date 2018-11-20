@@ -29,7 +29,7 @@ public class AppConfig extends WebSecurityConfigurerAdapter {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
-        configuration.setAllowedMethods(Arrays.asList("GET","POST"));
+        configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE"));
         configuration.setAllowCredentials(true);
         configuration.addAllowedHeader("Authorization");
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -44,9 +44,25 @@ public class AppConfig extends WebSecurityConfigurerAdapter {
                 .forRS256(apiAudience, issuer)
                 .configure(http)
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/api/public").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/private").authenticated()
-                .antMatchers(HttpMethod.GET, "/api/private-scoped").hasAuthority("read:messages");
+                .antMatchers(HttpMethod.POST, "/auctions").authenticated()
+                .antMatchers(HttpMethod.POST, "/auctions/recentAuctions").authenticated()
+                .antMatchers(HttpMethod.POST, "/auction/title_and_description").authenticated()
+                .antMatchers(HttpMethod.POST, "/auction/title").authenticated()
+                .antMatchers(HttpMethod.POST, "/auction/toFinish").authenticated()
+                .antMatchers(HttpMethod.POST, "/auction/toFinishBetween").authenticated()
+                .antMatchers(HttpMethod.POST, "/auction/update").authenticated()
+                .antMatchers(HttpMethod.POST, "/auction/{auctionId}/offer/{bidder}").authenticated()
+                .antMatchers(HttpMethod.POST, "/auction/first/offer/{auctionId}/{maxAmount}/{bidder}").authenticated()
+
+                .antMatchers(HttpMethod.DELETE, "/auction/delete/{id}").authenticated()
+
+                .antMatchers(HttpMethod.PUT, "/new/auction").authenticated()
+
+                .antMatchers(HttpMethod.GET, "/auction/recover/{id}").authenticated()
+
+                .antMatchers(HttpMethod.GET, "/auction/{emailAuthor}").permitAll();
+
+
     }
 
 }

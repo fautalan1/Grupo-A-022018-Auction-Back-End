@@ -52,7 +52,7 @@ public class AuctionController {
      *
      * */
     @LogExecutionTime
-    @PutMapping("/auction")
+    @PutMapping("/new/auction")
     public Auction add(@RequestBody @Valid Auction anAuction){
         return auctionService.create(anAuction);
     }
@@ -103,7 +103,7 @@ public class AuctionController {
 
 
     @LogExecutionTime
-    @PostMapping("/auction")
+    @PostMapping("/auction/update")
     public Auction update(@RequestBody @Valid Auction anAuction){
         return auctionService.update(anAuction);
     }
