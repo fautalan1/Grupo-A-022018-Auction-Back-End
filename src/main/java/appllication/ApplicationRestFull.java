@@ -46,19 +46,8 @@ public class ApplicationRestFull {
 		BuilderAuction anyBuilderAuction = new BuilderAuction();
 
 		//load Action//
+
 		//* New Action*//
-		auctionDao.save(
-				anyBuilderAuction
-				.anyAuction()
-				.withEmailAuthor("victor@Gmail.com")
-				.withDescription("----El mejor juego de play(eso dicen)----")
-				.withTitle("God of war")
-				.withPrice(200)
-                .withPhoto("https://www.crystalcommerce.com/wp-content/uploads/2018/09/square_gow4-notxt.jpg")
-				.get()
-		);
-
-
 		auctionDao.save(
 				anyBuilderAuction
 				.anyAuction()
@@ -66,6 +55,9 @@ public class ApplicationRestFull {
 				.withDescription("----Set completo del avatar cubre libro 1 2 3 4 ----")
 				.withTitle("Set Avatar")
 				.withPrice(500)
+				.withPublicationDate(LocalDateTime.now().plusHours(1))
+                .withFinishDate(LocalDateTime.now().plusDays(3))
+                .withInitialFinishDate(LocalDateTime.now().plusDays(3))
                 .withPhoto("https://static1.squarespace.com/static/547286fee4b0d546b9cd9ef6/t/579eb0eee58c625407399e3d/1501454327999/")
 				.get()
 		);
@@ -90,6 +82,9 @@ public class ApplicationRestFull {
 				.withDescription("----100% original made in argentina papa----")
 				.withTitle("Megaman")
 				.withPrice(2000)
+				.withPublicationDate(LocalDateTime.now().plusHours(1))
+                .withFinishDate(LocalDateTime.now().plusDays(3))
+                .withInitialFinishDate(LocalDateTime.now().plusDays(3))
                 .withPhoto("https://amp.businessinsider.com/images/5b928a6864dce81a008b5a0c-750-396.jpg")
 				.get()
 		);
@@ -98,9 +93,23 @@ public class ApplicationRestFull {
 		auctionDao.save(
 				anyBuilderAuction
 				.anyAuction()
+				.withEmailAuthor("victor@Gmail.com")
+				.withDescription("----El mejor juego de play(eso dicen)----")
+				.withTitle("God of war")
+				.withPrice(900)
+				.withPublicationDate(LocalDateTime.now().minusDays(2))
+				.withFinishDate(LocalDateTime.now().plusMinutes(17))
+				.withInitialFinishDate(LocalDateTime.now().plusMinutes(17))
+                .withPhoto("https://www.crystalcommerce.com/wp-content/uploads/2018/09/square_gow4-notxt.jpg")
+				.get()
+		);
+		auctionDao.save(
+				anyBuilderAuction
+				.anyAuction()
 				.withEmailAuthor("rukia@Gmail.com")
 				.withDescription("-----Dragon Ball FighterZ----------")
 				.withTitle("FighterZ")
+				.withPrice(200)
 				.withPublicationDate(LocalDateTime.now().minusDays(2))
                 .withFinishDate(LocalDateTime.now().plusHours(1))
                 .withInitialFinishDate(LocalDateTime.now().plusHours(1))
@@ -114,12 +123,23 @@ public class ApplicationRestFull {
 				.withTitle("Manga Dragon Ball")
                 .withPrice(100)
                 .withPhoto("https://cdn.hobbyconsolas.com/sites/navi.axelspringer.es/public/styles/main_element/public/filefield_paths/dragonballdvd2.jpg?itok=uO3HI59b")
-				.withPublicationDate(LocalDateTime.now().minusDays(1))
-				.withFinishDate(LocalDateTime.now().plusDays(1))
-				.withInitialFinishDate(LocalDateTime.now().plusDays(1))
+				.withPublicationDate(LocalDateTime.now().minusDays(2))
+				.withFinishDate(LocalDateTime.now().plusMinutes(7))
+				.withInitialFinishDate(LocalDateTime.now().plusMinutes(7))
 				.get()
 		);
-
+		auctionDao.save(anyBuilderAuction
+				.anyAuction()
+				.withEmailAuthor("arkham@Gmail.com")
+				.withDescription("Batman Arkham Knight is a 2015 action-adventure video game developed by Rocksteady Studios")
+				.withTitle("Arkham Knight")
+                .withPrice(750)
+                .withPhoto("https://steamcdn-a.akamaihd.net/steam/apps/208650/ss_88b07767c3d67b3d5be85fb27c97527770a98e7e.1920x1080.jpg?t=1496257975")
+				.withPublicationDate(LocalDateTime.now().minusDays(2))
+				.withFinishDate(LocalDateTime.now().plusHours(10))
+				.withInitialFinishDate(LocalDateTime.now().plusHours(10))
+				.get()
+		);
 		auctionDao.save(anyBuilderAuction
 				.anyAuction()
 				.withEmailAuthor("locomotion@Gmail.com")
@@ -127,9 +147,9 @@ public class ApplicationRestFull {
 				.withTitle("Locomotion")
                 .withPrice(200)
                 .withPhoto("http://anime.es/wp-content/uploads/2015/10/NGEvangelion-770x433.jpg")
-				.withPublicationDate(LocalDateTime.now().minusDays(2))
-				.withFinishDate(LocalDateTime.now().plusMinutes(1))
-				.withInitialFinishDate(LocalDateTime.now().plusMinutes(3))
+				.withPublicationDate(LocalDateTime.now().minusDays(1))
+				.withFinishDate(LocalDateTime.now().plusDays(2))
+				.withInitialFinishDate(LocalDateTime.now().plusDays(2))
 				.get()
 		);
 
@@ -156,7 +176,7 @@ public class ApplicationRestFull {
 				.withTitle("Goku Bampresto")
                 .withPrice(900)
                 .withPhoto("https://www.ninoma.com/media/catalog/product/cache/2/image/02067325ba47ad6dbc32075e74e23f9c/n/e/new_goku_1.jpg")
-				.withPublicationDate(LocalDateTime.now())
+				.withPublicationDate(LocalDateTime.now().minusDays(5))
 				.withFinishDate(LocalDateTime.now().minusDays(1))
 				.withInitialFinishDate(LocalDateTime.now().minusDays(1))
 				.get()
