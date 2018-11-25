@@ -144,7 +144,7 @@ public class AuctionService {
 
     @Transactional
     public Page<Auction> recoverAuctionsToFinish(RequestPage aPage){
-        return auctionDao.findByFinishDateLessThanOrderByFinishDate(LocalDateTime.now(),PageRequest.of(aPage.getIndex(),aPage.getSize()));
+        return auctionDao.findByFinishDateGreaterThanOrderByFinishDate(LocalDateTime.now(),PageRequest.of(aPage.getIndex(),aPage.getSize()));
     }
 
     @Transactional
