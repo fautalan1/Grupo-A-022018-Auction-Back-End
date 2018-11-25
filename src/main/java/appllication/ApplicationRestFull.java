@@ -77,6 +77,9 @@ public class ApplicationRestFull {
 				.withDescription("----Waifusssssssssssss japonesa 100% original no fake----")
 				.withTitle("Waifu")
 				.withPrice(50)
+				.withPublicationDate(LocalDateTime.now().plusHours(1))
+                .withFinishDate(LocalDateTime.now().plusDays(3))
+                .withInitialFinishDate(LocalDateTime.now().plusDays(3))
                 .withPhoto("https://www.heypoorplayer.com/wp-content/uploads/2018/02/Segment_0001.jpg")
 				.get()
 		);
@@ -98,7 +101,9 @@ public class ApplicationRestFull {
 				.withEmailAuthor("rukia@Gmail.com")
 				.withDescription("-----Dragon Ball FighterZ----------")
 				.withTitle("FighterZ")
-				.withPublicationDate(LocalDateTime.now())
+				.withPublicationDate(LocalDateTime.now().minusDays(2))
+                .withFinishDate(LocalDateTime.now().plusHours(1))
+                .withInitialFinishDate(LocalDateTime.now().plusHours(1))
                 .withPhoto("https://icdn9.digitaltrends.com/image/dragon-ball-fighterz-review-1104-1920x1080.jpg")
 				.get()
 		);
@@ -109,7 +114,7 @@ public class ApplicationRestFull {
 				.withTitle("Manga Dragon Ball")
                 .withPrice(100)
                 .withPhoto("https://cdn.hobbyconsolas.com/sites/navi.axelspringer.es/public/styles/main_element/public/filefield_paths/dragonballdvd2.jpg?itok=uO3HI59b")
-				.withPublicationDate(LocalDateTime.now())
+				.withPublicationDate(LocalDateTime.now().minusDays(1))
 				.withFinishDate(LocalDateTime.now().plusDays(1))
 				.withInitialFinishDate(LocalDateTime.now().plusDays(1))
 				.get()
@@ -118,13 +123,13 @@ public class ApplicationRestFull {
 		auctionDao.save(anyBuilderAuction
 				.anyAuction()
 				.withEmailAuthor("locomotion@Gmail.com")
-				.withDescription("----Todas las videos cintas que quedaron de el famoso canal locomotion de anime----")
+				.withDescription("Todos los videos que quedaron de el famoso canal locomotion de anime")
 				.withTitle("Locomotion")
                 .withPrice(200)
                 .withPhoto("http://anime.es/wp-content/uploads/2015/10/NGEvangelion-770x433.jpg")
-				.withPublicationDate(LocalDateTime.now())
-				.withFinishDate(LocalDateTime.now().plusDays(1))
-				.withInitialFinishDate(LocalDateTime.now().plusDays(1))
+				.withPublicationDate(LocalDateTime.now().minusDays(2))
+				.withFinishDate(LocalDateTime.now().plusMinutes(1))
+				.withInitialFinishDate(LocalDateTime.now().plusMinutes(3))
 				.get()
 		);
 
