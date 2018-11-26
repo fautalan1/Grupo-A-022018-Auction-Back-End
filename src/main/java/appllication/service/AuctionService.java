@@ -194,4 +194,13 @@ public class AuctionService {
     public Auction popularAuction() {
        return auctionDao.mostPopularAuction(LocalDateTime.now());
     }
+    @LogExecutionTime
+    @Transactional
+    public Page<Auction> findAllByTitleLikeAndDescriptionLikeAndEmailAuthorLike(RequestPage aPage) {
+        return auctionDao.findAllByTitleLikeAndDescriptionLikeAndEmailAuthorLike(
+                aPage.getTitle(),
+                aPage.getDescription(),
+                aPage.getUserName(),
+                PageRequest.of(aPage.getIndex(),aPage.getSize()));
+    }
 }

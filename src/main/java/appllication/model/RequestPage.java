@@ -18,6 +18,8 @@ public class RequestPage {
 
     private LocalDateTime secondTime;
 
+    private String userName;
+
     public RequestPage(){
         firsTime= LocalDateTime.now();
         secondTime= LocalDateTime.now().plusDays(1);
@@ -71,5 +73,13 @@ public class RequestPage {
 
     public void setSecondTime(LocalDateTime secondTime) {
         this.secondTime = secondTime;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

@@ -26,6 +26,7 @@ public interface AuctionDao extends JpaRepository<Auction, Long>{
 
     Page<Auction> findByFinishDateGreaterThanOrderByFinishDate(LocalDateTime finishDate,Pageable pageable);
 
+    //Page<Auction> findByBiddersIsContaining(String aUserName,Pageable pageable)
 
     Page<Auction> findByPublicationDateGreaterThanOrderByPublicationDateDesc(Pageable pageable, LocalDateTime publicationDate);
 
@@ -35,6 +36,8 @@ public interface AuctionDao extends JpaRepository<Auction, Long>{
     @Query(value = "select a from Auction a where a.title like concat('%', :titleToFind,'%')")
     Page<Auction> findAllByTitleLike(@Param("titleToFind") String title,Pageable pageable);
 
+    @Query(value = "select a from Auction a where a.title like concat('%', :titleToFind,'%') and a.description like (concat('%',:description,'%')) and a.emailAuthor like (concat('%',:anEmailAuthor,'%'))")
+    Page<Auction> findAllByTitleLikeAndDescriptionLikeAndEmailAuthorLike(@Param("titleToFind") String title, @Param("description") String description,@Param("anEmailAuthor") String anEmailAuthor ,Pageable pageable);
 
     Page<Auction> findAllByFinishDateBetween(LocalDateTime aDateTime, LocalDateTime otherDateTime,Pageable pageable);
 

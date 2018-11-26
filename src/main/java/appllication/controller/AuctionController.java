@@ -66,6 +66,11 @@ public class AuctionController {
 
 
 
+    @PostMapping("/auctions/title_and_description_and_user_name")
+    public  Page<Auction> allByTitleAndDescriptionAndUserName(@RequestBody @Valid RequestPage aPage){
+        return auctionService.findAllByTitleLikeAndDescriptionLikeAndEmailAuthorLike(aPage);
+    }
+
     @PostMapping("/auctions/recentAuctions")
     public  Page<Auction> recentAuctions(@RequestBody @Valid RequestPage aPage){
         return auctionService.recoverAllOrderByPublicationDate(aPage);
