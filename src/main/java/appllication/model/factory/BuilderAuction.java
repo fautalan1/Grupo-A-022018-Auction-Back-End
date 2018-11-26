@@ -67,4 +67,9 @@ public class BuilderAuction {
         anyAction.setPhotos(photo);
         return this;
     }
+
+    public BuilderAuction withBidder(String aBidder){
+        anyAction.offer(aBidder);
+        return this;
+    }
 }

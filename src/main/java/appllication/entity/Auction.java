@@ -48,6 +48,8 @@ public class Auction  {
 
     private AuctionStatus currentState;
 
+    private long countBidders;
+
     @OneToMany(fetch= FetchType.EAGER,cascade=CascadeType.ALL)
     private List<Bidder> bidders;
 
@@ -125,6 +127,8 @@ public class Auction  {
 
     public void setCurrentState(AuctionStatus currentState) {        this.currentState = currentState;    }
 
+
+
     public AuctionStatus state() {
         this.setCurrentState(new StatusProviderOfAnAuction().getState(this));
         return this.getCurrentState();
@@ -170,6 +174,7 @@ public class Auction  {
     }
 
     private void addBidder(Bidder bidder) {
+        this.countBidders++;
         this.bidders.add(bidder);
     }
 
@@ -199,5 +204,13 @@ public class Auction  {
 
     private Bidder getLastBidder() {
         return this.bidders.get(this.bidders.size()-1);
+    }
+
+    public long getCountBidders() {
+        return countBidders;
+    }
+
+    public void setCountBidders(long countBidders) {
+        this.countBidders = countBidders;
     }
 }

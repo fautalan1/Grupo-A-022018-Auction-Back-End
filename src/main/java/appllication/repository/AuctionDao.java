@@ -2,9 +2,9 @@ package appllication.repository;
 
 import appllication.entity.Auction;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
+
 
 
 @Component("auctionDao")
@@ -37,6 +37,12 @@ public interface AuctionDao extends JpaRepository<Auction, Long>{
 
 
     Page<Auction> findAllByFinishDateBetween(LocalDateTime aDateTime, LocalDateTime otherDateTime,Pageable pageable);
+
+    @Query(value = " SELECT a FROM Auction a WHERE a.countBidders = (SELECT MAX(countBidders) FROM Auction b where b.finishDate > :now)")
+    Auction mostPopularAuction(@Param("now") LocalDateTime now);
+
+
+
 
 
 }

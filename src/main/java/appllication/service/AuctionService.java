@@ -1,5 +1,6 @@
 package appllication.service;
 
+import appllication.annotation.LogExecutionTime;
 import appllication.entity.Auction;
 import appllication.model.Exception.*;
 
@@ -32,10 +33,11 @@ public class AuctionService {
         this.auctionDao = auctionDao;
     }
 
+    @LogExecutionTime
     @Transactional
     public Auction create(Auction anAuction)  {
           if(this.isMaxAuctionInProgress(anAuction.getEmailAuthor())){
-              throw new MaxAuctionInProgressException("It is max Auction in progress");
+              throw new MaxAuctionInProgressException("It is mostPopularAuction Auction in progress");
           }
           if(this.isGreaterThanTheCurrentDay(LocalDateTime.now(), anAuction.getPublicationDate(), 1)){
               throw new ItIsNotGreaterThanTheCurrentDayException("It Is Not Greater Than The Current one Day");
@@ -48,12 +50,15 @@ public class AuctionService {
            auctionDao.save(anAuction);
            return anAuction;
     }
+
+    @LogExecutionTime
     @Transactional
     public Auction update(Auction anAuction){
         auctionDao.save(anAuction);
         return anAuction;
     }
 
+    @LogExecutionTime
     @Transactional
     public Auction recover(String anAuthorName){
         Optional<Auction> anAuction = Optional.ofNullable(auctionDao.findByEmailAuthor(anAuthorName));
@@ -64,7 +69,7 @@ public class AuctionService {
         return anAuction.get();
     }
 
-
+    @LogExecutionTime
     private boolean isMaxAuctionInProgress(String anEmailAuthor){
         List<Auction> someAuctionNewAndInProgress = auctionDao.findAllByEmailAuthor(anEmailAuthor).
                                                             stream().
@@ -78,6 +83,7 @@ public class AuctionService {
         return Duration.between(aLocalDateTime, otherLocalDateTime).abs().toDays() < aDay;
     }
 
+    @LogExecutionTime
     @Transactional
     public Auction recoverById(long auctionId) {
         Optional<Auction> anAuction = auctionDao.findById(auctionId);
@@ -87,6 +93,7 @@ public class AuctionService {
         return anAuction.get();
     }
 
+    @LogExecutionTime
     @Transactional
     public Auction offer(long auctionId, String bidder) {
         Auction auction = recoverById(auctionId);
@@ -103,6 +110,7 @@ public class AuctionService {
         return update(auction);
     }
 
+    @LogExecutionTime
     @Transactional
     public Auction firstOffer(long auctionId, long maxAmount, String bidder) {
         Auction auction = recoverById(auctionId);
@@ -122,14 +130,18 @@ public class AuctionService {
         return update(auction);
     }
 
+    @LogExecutionTime
     @Transactional
     public Page<Auction> recoverAll(RequestPage aPage){
         return auctionDao.findAll(PageRequest.of(aPage.getIndex(),aPage.getSize()));}
 
+    @LogExecutionTime
     @Transactional
     public  Page<Auction> recoverAllOrderByPublicationDate(RequestPage aPage){
         return auctionDao.findByPublicationDateGreaterThanOrderByPublicationDateDesc(PageRequest.of(aPage.getIndex(),aPage.getSize()),LocalDateTime.now());
     }
+
+    @LogExecutionTime
     @Transactional
 
     public Page<Auction> recoverAllByTitleLikeAndDescriptionLike(RequestPage aPage){
@@ -137,21 +149,24 @@ public class AuctionService {
                                                         aPage.getDescription(),
                                                         PageRequest.of(aPage.getIndex(),aPage.getSize()));
     }
+
+    @LogExecutionTime
     @Transactional
     public Page<Auction> recoverAllByTitleLike(RequestPage aPage){
         return auctionDao.findAllByTitleLike(aPage.getTitle(),PageRequest.of(aPage.getIndex(),aPage.getSize()));
     }
-
+    @LogExecutionTime
     @Transactional
     public Page<Auction> recoverAuctionsToFinish(RequestPage aPage){
         return auctionDao.findByFinishDateLessThanOrderByFinishDate(LocalDateTime.now(),PageRequest.of(aPage.getIndex(),aPage.getSize()));
     }
-
+    @LogExecutionTime
     @Transactional
     public Page<Auction> recoverAuctionsToFinishBetween(RequestPage aPage){
         return auctionDao.findAllByFinishDateBetween(aPage.getFirsTime(),aPage.getSecondTime(),PageRequest.of(aPage.getIndex(),aPage.getSize()));
     }
 
+    @LogExecutionTime
     @Transactional
     public void delete(long id) {
         Optional<Auction> anAuctionOption = Optional.ofNullable(auctionDao.getOne(id));
@@ -174,5 +189,9 @@ public class AuctionService {
 
     }
 
-
+    @LogExecutionTime
+    @Transactional
+    public Auction popularAuction() {
+       return auctionDao.mostPopularAuction(LocalDateTime.now());
+    }
 }

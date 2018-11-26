@@ -59,7 +59,7 @@ public class AppConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.PUT, "/new/auction").authenticated()
 
                 .antMatchers(HttpMethod.GET, "/auction/recover/{id}").authenticated()
-
+                .antMatchers(HttpMethod.GET, "/auction/popular").authenticated()
                 .antMatchers(HttpMethod.GET, "/auction/{emailAuthor}").permitAll();
 
 

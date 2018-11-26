@@ -100,6 +100,8 @@ public class ApplicationRestFull {
 				.withTitle("FighterZ")
 				.withPublicationDate(LocalDateTime.now())
                 .withPhoto("https://icdn9.digitaltrends.com/image/dragon-ball-fighterz-review-1104-1920x1080.jpg")
+				.withBidder("Juan")
+				.withBidder("pepito")
 				.get()
 		);
 		auctionDao.save(anyBuilderAuction
@@ -112,6 +114,7 @@ public class ApplicationRestFull {
 				.withPublicationDate(LocalDateTime.now())
 				.withFinishDate(LocalDateTime.now().plusDays(1))
 				.withInitialFinishDate(LocalDateTime.now().plusDays(1))
+				.withBidder("pepito")
 				.get()
 		);
 
@@ -141,7 +144,10 @@ public class ApplicationRestFull {
 				.withPublicationDate(LocalDateTime.now().minusDays(5))
 				.withFinishDate(LocalDateTime.now().minusDays(1))
 				.withInitialFinishDate(LocalDateTime.now().minusDays(1))
-				.get()
+						.withBidder("SEÑOR Z")
+						.withBidder("SEÑOR Y")
+						.withBidder("SEÑOR X")
+						.get()
 		);
 		auctionDao.save(
 				anyBuilderAuction
