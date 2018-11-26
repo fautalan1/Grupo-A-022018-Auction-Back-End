@@ -158,7 +158,7 @@ public class AuctionService {
     @LogExecutionTime
     @Transactional
     public Page<Auction> recoverAuctionsToFinish(RequestPage aPage){
-        return auctionDao.findByFinishDateLessThanOrderByFinishDate(LocalDateTime.now(),PageRequest.of(aPage.getIndex(),aPage.getSize()));
+        return auctionDao.findByFinishDateGreaterThanOrderByFinishDate(LocalDateTime.now(),PageRequest.of(aPage.getIndex(),aPage.getSize()));
     }
     @LogExecutionTime
     @Transactional

@@ -24,7 +24,7 @@ public interface AuctionDao extends JpaRepository<Auction, Long>{
 
     List<Auction>  findAllByEmailAuthor(String anEmailAuthor);
 
-    Page<Auction> findByFinishDateLessThanOrderByFinishDate(LocalDateTime finishDate,Pageable pageable);
+    Page<Auction> findByFinishDateGreaterThanOrderByFinishDate(LocalDateTime finishDate,Pageable pageable);
 
 
     Page<Auction> findByPublicationDateGreaterThanOrderByPublicationDateDesc(Pageable pageable, LocalDateTime publicationDate);
