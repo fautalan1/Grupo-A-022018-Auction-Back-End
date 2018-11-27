@@ -41,11 +41,12 @@ public interface AuctionDao extends JpaRepository<Auction, Long>{
 
     Page<Auction> findAllByFinishDateBetween(LocalDateTime aDateTime, LocalDateTime otherDateTime,Pageable pageable);
 
-    @Query(value = " SELECT a FROM Auction a WHERE a.countBidders = (SELECT MAX(countBidders) FROM Auction b where b.finishDate > :now)")
-    Auction mostPopularAuction(@Param("now") LocalDateTime now);
+    @Query(value = "SELECT a FROM Auction a WHERE a.countBidders = (SELECT MAX(countBidders) FROM Auction b where b.finishDate > :now)")
+    Auction  mostPopularAuction(@Param("now") LocalDateTime now);
+
+    @Query(value = " SELECT auc FROM Auction auc where auc.id IN (SELECT b.auction.id FROM Bidder b where b.author = :userName)")
+    Page<Auction> findAllByUserParticipate(@Param("userName") String userName, Pageable pageable);
 
 
-
-
-
+    Page<Auction> findAllByFinishDateGreaterThanOrderByCountBiddersDesc(LocalDateTime anyDateTime,Pageable pageable);
 }

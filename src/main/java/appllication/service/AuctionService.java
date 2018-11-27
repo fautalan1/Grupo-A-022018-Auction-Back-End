@@ -194,12 +194,29 @@ public class AuctionService {
     public Auction popularAuction() {
        return auctionDao.mostPopularAuction(LocalDateTime.now());
     }
+
     @LogExecutionTime
     @Transactional
     public Page<Auction> findAllByTitleLikeAndDescriptionLikeAndEmailAuthorLike(RequestPage aPage) {
         return auctionDao.findAllByTitleLikeAndDescriptionLikeAndEmailAuthorLike(
                 aPage.getTitle(),
                 aPage.getDescription(),
+                aPage.getUserName(),
+                PageRequest.of(aPage.getIndex(),aPage.getSize()));
+    }
+
+    @LogExecutionTime
+    @Transactional
+    public Page<Auction> mostPopularAuctions(RequestPage aPage){
+        return auctionDao.findAllByFinishDateGreaterThanOrderByCountBiddersDesc(
+                LocalDateTime.now(),
+                PageRequest.of(aPage.getIndex(),aPage.getSize()));
+    }
+
+    @LogExecutionTime
+    @Transactional
+    public Page<Auction> userParticipate(RequestPage aPage){
+        return auctionDao.findAllByUserParticipate(
                 aPage.getUserName(),
                 PageRequest.of(aPage.getIndex(),aPage.getSize()));
     }

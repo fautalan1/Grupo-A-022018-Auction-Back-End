@@ -118,6 +118,16 @@ public class AuctionController {
         return auctionService.firstOffer(auctionId, maxAmount, bidder);
     }
 
+    @PostMapping("/auctions/popular")
+    public Page<Auction>  recoverMostPopularAuction(@RequestBody @Valid RequestPage aPage){
+        return auctionService.mostPopularAuctions(aPage);
+    }
+
+    @PostMapping("/auctions/user/participate")
+    public Page<Auction> revoverAuctionsUserParticipate(@RequestBody @Valid RequestPage aPage){
+        return auctionService.userParticipate(aPage);
+    }
+
     /**********************************************************************************/
 
     /* Delete

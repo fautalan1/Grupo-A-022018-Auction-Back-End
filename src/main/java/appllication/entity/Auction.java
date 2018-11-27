@@ -188,6 +188,7 @@ public class Auction  {
         return this.automaticOfferAmount != 0 && newPrice <= this.getAutomaticOfferAmount();
     }
 
+
     public boolean thereIsAutomaticUser() {
       return !StringUtils.isEmpty(automaticOfferUser);
     }
