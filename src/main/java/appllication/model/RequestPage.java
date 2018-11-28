@@ -2,6 +2,9 @@ package appllication.model;
 
 
 import java.time.LocalDateTime;
+import java.util.List;
+
+import org.javatuples.Quartet;
 
 public class RequestPage {
 
@@ -20,12 +23,32 @@ public class RequestPage {
 
     private String userName;
 
+    private List<String> usersName; 
+
+
     public RequestPage(){
         firsTime= LocalDateTime.now();
         secondTime= LocalDateTime.now().plusDays(1);
     }
 
 
+
+    /**
+     * @return the usersName
+     */
+    public List<String> getUsersName() {
+        return usersName;
+    }
+
+    public Quartet<String,String,String,String> getTuple(){   
+        return  Quartet.fromCollection(this.getUsersName());
+    }
+    /**
+     * @param usersName the usersName to set
+     */
+    public void setUsersName(List<String> usersName) {
+        this.usersName = usersName;
+    }
 
     public int getIndex() {
         return index;

@@ -1,6 +1,8 @@
 package appllication.repository;
 
 import appllication.entity.Auction;
+
+import org.javatuples.Quartet;
 import org.springframework.data.domain.Page;
 
 import org.springframework.data.domain.Pageable;
@@ -47,6 +49,14 @@ public interface AuctionDao extends JpaRepository<Auction, Long>{
     @Query(value = " SELECT auc FROM Auction auc where auc.id IN (SELECT b.auction.id FROM Bidder b where b.author = :userName)")
     Page<Auction> findAllByUserParticipate(@Param("userName") String userName, Pageable pageable);
 
+    // @Query(value = " SELECT auc FROM Auction auc where auc.id IN (SELECT b.auction.id FROM Bidder b where b.author IN :usersName)")
+    // Page<Auction> findAllByUsersParticipate(@Param("usersName") Quartet<String,String,String,String> usersName, Pageable pageable);
+    @Query(value = " SELECT auc FROM Auction auc where auc.id IN (SELECT b.auction.id FROM Bidder b where b.author IN (:userName))")
+    Page<Auction> findAllByUsersParticipate2(@Param("userName") String userName,
+    @Param("userName1") String userName1,
+    @Param("userName2") String userName2,
+    @Param("userName3") String userName3,
+     Pageable pageable);
 
     Page<Auction> findAllByFinishDateGreaterThanOrderByCountBiddersDesc(LocalDateTime anyDateTime,Pageable pageable);
 }

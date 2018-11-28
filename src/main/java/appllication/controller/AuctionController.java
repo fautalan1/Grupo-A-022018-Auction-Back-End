@@ -128,6 +128,11 @@ public class AuctionController {
         return auctionService.userParticipate(aPage);
     }
 
+    // @PostMapping("/auctions/users/participate")
+    // public Page<Auction> revoverAuctionsUsersParticipate(@RequestBody @Valid RequestPage aPage){
+    //     return auctionService.userParticipate(aPage);
+    // }
+
     /**********************************************************************************/
 
     /* Delete
