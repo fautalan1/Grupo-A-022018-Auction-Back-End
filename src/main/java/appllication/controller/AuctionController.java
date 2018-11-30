@@ -124,14 +124,14 @@ public class AuctionController {
     }
 
     @PostMapping("/auctions/user/participate")
-    public Page<Auction> revoverAuctionsUserParticipate(@RequestBody @Valid RequestPage aPage){
+    public Page<Auction> recoverAuctionsUserParticipate(@RequestBody @Valid RequestPage aPage){
         return auctionService.userParticipate(aPage);
     }
 
-    // @PostMapping("/auctions/users/participate")
-    // public Page<Auction> revoverAuctionsUsersParticipate(@RequestBody @Valid RequestPage aPage){
-    //     return auctionService.userParticipate(aPage);
-    // }
+     @PostMapping("/auctions/users/participate")
+     public Page<Auction> recoverAuctionsUsersParticipate(@RequestBody @Valid RequestPage aPage){
+        return auctionService.usersParticipate(aPage);
+     }
 
     /**********************************************************************************/
 

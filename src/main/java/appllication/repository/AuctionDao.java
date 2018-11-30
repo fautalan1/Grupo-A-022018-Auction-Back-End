@@ -49,14 +49,12 @@ public interface AuctionDao extends JpaRepository<Auction, Long>{
     @Query(value = " SELECT auc FROM Auction auc where auc.id IN (SELECT b.auction.id FROM Bidder b where b.author = :userName)")
     Page<Auction> findAllByUserParticipate(@Param("userName") String userName, Pageable pageable);
 
-    // @Query(value = " SELECT auc FROM Auction auc where auc.id IN (SELECT b.auction.id FROM Bidder b where b.author IN :usersName)")
-    // Page<Auction> findAllByUsersParticipate(@Param("usersName") Quartet<String,String,String,String> usersName, Pageable pageable);
-    @Query(value = " SELECT auc FROM Auction auc where auc.id IN (SELECT b.auction.id FROM Bidder b where b.author IN (:userName))")
-    Page<Auction> findAllByUsersParticipate2(@Param("userName") String userName,
-    @Param("userName1") String userName1,
-    @Param("userName2") String userName2,
-    @Param("userName3") String userName3,
-     Pageable pageable);
+    @Query(value = " SELECT auc FROM Auction auc where auc.id IN (SELECT b.auction.id FROM Bidder b where b.author = :oneUserName or b.author = :twoUserName or b.author = :threeUserName  )")
+    Page<Auction> searchUsersParticipate(@Param("oneUserName")   String oneUserName,
+                                         @Param("twoUserName")   String twoUserName,
+                                         @Param("threeUserName") String threeUserName, Pageable pageable);
+
+
 
     Page<Auction> findAllByFinishDateGreaterThanOrderByCountBiddersDesc(LocalDateTime anyDateTime,Pageable pageable);
 }

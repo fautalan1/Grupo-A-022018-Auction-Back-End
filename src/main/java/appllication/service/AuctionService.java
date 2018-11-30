@@ -221,24 +221,15 @@ public class AuctionService {
                 PageRequest.of(aPage.getIndex(),aPage.getSize()));
     }
 
-    // @LogExecutionTime
-    // @Transactional
-    // public Page<Auction> usersParticipate(RequestPage aPage){
-    //     return auctionDao.findAllByUsersParticipate(
-    //         aPage.getTuple(),
-    //         PageRequest.of(aPage.getIndex(),aPage.getSize()));
-    // }
-
     @LogExecutionTime
     @Transactional
     public Page<Auction> usersParticipate(RequestPage aPage){
-        return auctionDao.findAllByUsersParticipate2(
-            // aPage.getTuple(),
+        return auctionDao.searchUsersParticipate(
             aPage.getUsersName().get(0),
             aPage.getUsersName().get(1),
             aPage.getUsersName().get(2),
-            aPage.getUsersName().get(3),
-            PageRequest.of(aPage.getIndex(),aPage.getSize()));
+            PageRequest.of( aPage.getIndex(),
+                            aPage.getSize()));
     }
 
 }
