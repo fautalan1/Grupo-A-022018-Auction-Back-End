@@ -28,6 +28,7 @@ public class Bidder {
 
     public Bidder(){}
 
+
     Bidder(String bidder, Auction auction, long newPrice, LocalDateTime time) {
         setAuthor(bidder);
         setAuction(auction);

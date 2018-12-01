@@ -39,24 +39,31 @@ public class AuctionService {
           if(this.isMaxAuctionInProgress(anAuction.getEmailAuthor())){
               throw new MaxAuctionInProgressException("It is mostPopularAuction Auction in progress");
           }
-          if(this.isGreaterThanTheCurrentDay(LocalDateTime.now(), anAuction.getPublicationDate(), 1)){
-              throw new ItIsNotGreaterThanTheCurrentDayException("It Is Not Greater Than The Current one Day");
-          }
-
-          if(this.isGreaterThanTheCurrentDay(anAuction.getPublicationDate(), anAuction.getFinishDate(), 2)){
-              throw new ItIsNotGreaterThanTheCurrentDayException("It Is Not Greater Than The Current two Day");
-           }
+          this.validation(anAuction);
 
            auctionDao.save(anAuction);
            return anAuction;
     }
 
+    private void validation(Auction anAuction){
+        if(this.isGreaterThanTheCurrentDay(LocalDateTime.now(), anAuction.getPublicationDate(), 1)){
+            throw new ItIsNotGreaterThanTheCurrentDayException("It Is Not Greater Than The Current one Day");
+        }
+
+        if(this.isGreaterThanTheCurrentDay(anAuction.getPublicationDate(), anAuction.getFinishDate(), 2)){
+            throw new ItIsNotGreaterThanTheCurrentDayException("It Is Not Greater Than The Current two Day");
+        }
+    }
+
     @LogExecutionTime
     @Transactional
     public Auction update(Auction anAuction){
+        this.validation(anAuction);
+
         auctionDao.save(anAuction);
         return anAuction;
     }
+
 
     @LogExecutionTime
     @Transactional
@@ -107,7 +114,8 @@ public class AuctionService {
             throw new NotProgressException("Auction is not in progress");
         }
         auction.offer(bidder);
-        return update(auction);
+        auctionDao.save(auction);
+        return auction;
     }
 
     @LogExecutionTime
@@ -127,7 +135,9 @@ public class AuctionService {
             throw new NotProgressException("Auction is not in progress");
         }
         auction.firstOffer(bidder, maxAmount);
-        return update(auction);
+
+        auctionDao.save(auction);
+        return auction;
     }
 
     @LogExecutionTime

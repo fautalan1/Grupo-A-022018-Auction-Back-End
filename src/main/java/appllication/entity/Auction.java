@@ -19,7 +19,14 @@ import java.util.List;
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id")
-public class Auction  {
+public class Auction {
+
+    /*        if(this.automaticOfferUser != null &&
+                !bidder.equals(this.emailAuthor) &&
+                !bidder.equals(this.automaticOfferUser) &&
+                this.fivePercentMoreThanTheCurrentPrice() <= this.automaticOfferAmount) {
+            this.offer(this.automaticOfferUser);
+        }*/
 
     @GeneratedValue
     @Id
@@ -35,6 +42,8 @@ public class Auction  {
 
     private long price;
     private long automaticOfferAmount;
+
+    private List<Bidder> firstBidders;
 
     @Size(min = 5, max = 50,
             message = " title must be between 10 and 50 characters")
@@ -160,12 +169,14 @@ public class Auction  {
         if(theAuctionMustBeExtended()) {
             setFinishDate(this.finishDate.plusMinutes(5));
         }
-        if(this.automaticOfferUser != null &&
-                !bidder.equals(this.emailAuthor) &&
-                !bidder.equals(this.automaticOfferUser) &&
-                this.fivePercentMoreThanTheCurrentPrice() <= this.automaticOfferAmount) {
-            this.offer(this.automaticOfferUser);
+
+        for(Bidder anyBidder : this.firstBidders){
+            if(this.fivePercentHigherThanTheCurrentPrice(anyBidder)) this.offer(this.automaticOfferUser);
         }
+    }
+
+    private  boolean fivePercentHigherThanTheCurrentPrice(Bidder anyBidder){
+        return this.fivePercentMoreThanTheCurrentPrice() <= anyBidder.getPrice();
     }
 
     public void firstOffer(String bidder, long maxAmount) {
@@ -173,16 +184,15 @@ public class Auction  {
         this.offer(bidder);
     }
 
+    public void automaticOffer(String email, long amount) {
+        this.firstBidders.add(new Bidder(email,this,amount,LocalDateTime.now()));
+    }
+
+
     private void addBidder(Bidder bidder) {
         this.countBidders++;
         this.bidders.add(bidder);
     }
-
-    public void automaticOffer(String email, long amount) {
-        setAutomaticOfferUser(email);
-        setAutomaticOfferAmount(amount);
-    }
-
     public boolean thereIsToDoTheAutomaticOffer() {
         long newPrice = fivePercentMoreThanTheCurrentPrice();
         return this.automaticOfferAmount != 0 && newPrice <= this.getAutomaticOfferAmount();
@@ -213,5 +223,13 @@ public class Auction  {
 
     public void setCountBidders(long countBidders) {
         this.countBidders = countBidders;
+    }
+
+    public List<Bidder> getFirstBidders() {
+        return firstBidders;
+    }
+
+    public void setFirstBidders(List<Bidder> firstBidders) {
+        this.firstBidders = firstBidders;
     }
 }
