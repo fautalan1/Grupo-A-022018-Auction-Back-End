@@ -1,8 +1,6 @@
 package appllication.repository;
 
 import appllication.entity.Auction;
-
-import org.javatuples.Quartet;
 import org.springframework.data.domain.Page;
 
 import org.springframework.data.domain.Pageable;

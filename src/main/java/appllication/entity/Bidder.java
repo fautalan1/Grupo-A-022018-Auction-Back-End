@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @JsonIdentityInfo(
@@ -25,6 +24,8 @@ public class Bidder {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Auction auction;
+
+    private boolean firstBidder;
 
     public Bidder(){}
 
@@ -74,5 +75,13 @@ public class Bidder {
 
     public void setAuction(Auction auction) {
         this.auction = auction;
+    }
+
+    public boolean isFirstBidder() {
+        return firstBidder;
+    }
+
+    public void setFirstBidder(boolean firstBidder) {
+        this.firstBidder = firstBidder;
     }
 }

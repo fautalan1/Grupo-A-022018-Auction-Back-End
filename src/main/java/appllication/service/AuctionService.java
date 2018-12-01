@@ -5,6 +5,7 @@ import appllication.entity.Auction;
 import appllication.model.Exception.*;
 
 import appllication.model.RequestPage;
+import appllication.repository.BidderDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
@@ -26,12 +27,17 @@ import static org.springframework.http.HttpStatus.CONFLICT;
 @Component("auctionService")
 public class AuctionService {
 
+
+    private final BidderDao  bidderDao;
+
     private final AuctionDao auctionDao;
 
     @Autowired
-    public AuctionService(@Qualifier("auctionDao") AuctionDao auctionDao) {
+    public AuctionService(@Qualifier("bidderDao") BidderDao bidderDao, @Qualifier("auctionDao") AuctionDao auctionDao) {
+        this.bidderDao = bidderDao;
         this.auctionDao = auctionDao;
     }
+
 
     @LogExecutionTime
     @Transactional
@@ -103,7 +109,17 @@ public class AuctionService {
     @LogExecutionTime
     @Transactional
     public Auction offer(long auctionId, String bidder) {
+        Auction auction = this.recoverAndValidation(auctionId,bidder);
+        auction.offer(bidder);
+        auction.notifyAutomaticOffer();
+        auctionDao.save(auction);
+        return auction;
+    }
+
+    private Auction  recoverAndValidation(long auctionId,String bidder){
         Auction auction = recoverById(auctionId);
+        auction.setFirstBidders(bidderDao.findAllByFirstBidderAndAuction(true,auctionId));
+
         if(auction.isAuthor(bidder)){
             throw new BidderIsTheAuctionAuthorException("Bidder is auction author");
         }
@@ -113,26 +129,16 @@ public class AuctionService {
         if(!auction.isInProgress()){
             throw new NotProgressException("Auction is not in progress");
         }
-        auction.offer(bidder);
-        auctionDao.save(auction);
         return auction;
     }
+
 
     @LogExecutionTime
     @Transactional
     public Auction firstOffer(long auctionId, long maxAmount, String bidder) {
-        Auction auction = recoverById(auctionId);
-        if(auction.isAuthor(bidder)){
-            throw new BidderIsTheAuctionAuthorException("Bidder is auction author");
-        }
-        if(!auction.getBidders().isEmpty()){
-            throw new LastBidderException("Has already been offered"); // change exception
-        }
+        Auction auction = this.recoverAndValidation(auctionId,bidder);
         if(auction.fivePercentMoreThanTheCurrentPrice() > maxAmount){
             throw new LastBidderException("Insufficient minimum price"); // change exception
-        }
-        if(!auction.isInProgress()){
-            throw new NotProgressException("Auction is not in progress");
         }
         auction.firstOffer(bidder, maxAmount);
 

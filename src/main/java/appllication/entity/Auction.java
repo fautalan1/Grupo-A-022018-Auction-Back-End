@@ -43,6 +43,7 @@ public class Auction {
     private long price;
     private long automaticOfferAmount;
 
+    @OneToMany(fetch= FetchType.LAZY,cascade=CascadeType.ALL)
     private List<Bidder> firstBidders;
 
     @Size(min = 5, max = 50,
@@ -64,6 +65,7 @@ public class Auction {
 
     public Auction(){
         this.bidders = new ArrayList<>();
+        this.firstBidders = new ArrayList<>();
     }
 
     public long getId() { return id; }
@@ -162,6 +164,20 @@ public class Auction {
         return (this.price * 5 / 100) + this.price;
     }
 
+    public void firstOffer(String bidder, long maxAmount) {
+        this.offer(bidder);
+        this.notifyAutomaticOffer();
+        this.automaticOffer(bidder, maxAmount);
+    }
+
+    public void notifyAutomaticOffer(){
+        for (Bidder anyBidder : this.firstBidders) {
+            if ( this.fivePercentHigherThanTheCurrentPrice(anyBidder)) {
+                this.offer(anyBidder.getAuthor());
+            }
+        }
+    }
+
     public void offer(String bidder) {
         long newPrice = fivePercentMoreThanTheCurrentPrice();
         addBidder(new Bidder(bidder, this, newPrice, LocalDateTime.now()));
@@ -169,33 +185,24 @@ public class Auction {
         if(theAuctionMustBeExtended()) {
             setFinishDate(this.finishDate.plusMinutes(5));
         }
-
-        for(Bidder anyBidder : this.firstBidders){
-            if(this.fivePercentHigherThanTheCurrentPrice(anyBidder)) this.offer(this.automaticOfferUser);
-        }
     }
 
     private  boolean fivePercentHigherThanTheCurrentPrice(Bidder anyBidder){
-        return this.fivePercentMoreThanTheCurrentPrice() <= anyBidder.getPrice();
+        return  this.fivePercentMoreThanTheCurrentPrice() <= anyBidder.getPrice();
     }
 
-    public void firstOffer(String bidder, long maxAmount) {
-        this.automaticOffer(bidder, maxAmount);
-        this.offer(bidder);
-    }
+
 
     public void automaticOffer(String email, long amount) {
-        this.firstBidders.add(new Bidder(email,this,amount,LocalDateTime.now()));
+        Bidder aBidder =  new Bidder(email,this,amount,LocalDateTime.now());
+        aBidder.setFirstBidder(true);
+        this.firstBidders.add(aBidder);
     }
 
 
     private void addBidder(Bidder bidder) {
         this.countBidders++;
         this.bidders.add(bidder);
-    }
-    public boolean thereIsToDoTheAutomaticOffer() {
-        long newPrice = fivePercentMoreThanTheCurrentPrice();
-        return this.automaticOfferAmount != 0 && newPrice <= this.getAutomaticOfferAmount();
     }
 
 

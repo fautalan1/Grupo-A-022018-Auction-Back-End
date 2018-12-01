@@ -81,31 +81,6 @@ public class AuctionTest {
         assertEquals(finishDate, auction.getFinishDate());
     }
 
-    @Test public void shouldReturnTrueWhenAnAutomaticOfferWasMadeAndThePriceIsWithinTheMaximumValue(){
-
-        Auction auction = AuctionFactory.anyAuction();
-        auction.setPrice(100);
-        auction.automaticOffer(UserFactory.anyEmail(), 105);
-
-        assertTrue(auction.thereIsToDoTheAutomaticOffer());
-    }
-
-    @Test public void shouldReturnFalseWhenAnAutomaticOfferWasNotMade(){
-
-        Auction auction = AuctionFactory.anyAuction();
-
-        assertFalse(auction.thereIsToDoTheAutomaticOffer());
-    }
-
-    @Test public void shouldReturnFalseWhenAnAutomaticOfferWasMadeButThePriceIsNotWithinTheMaximumValue(){
-
-        Auction auction = AuctionFactory.anyAuction();
-        auction.setPrice(100);
-        auction.automaticOffer(UserFactory.anyEmail(), 102);
-
-        assertFalse(auction.thereIsToDoTheAutomaticOffer());
-    }
-
 
     @Test public void anAuctionIsSetAsAutomatic(){
         Auction auction = AuctionFactory.anyAuction();
