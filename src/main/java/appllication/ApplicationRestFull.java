@@ -51,7 +51,7 @@ public class ApplicationRestFull {
 		auctionDao.save(
 				anyBuilderAuction
 				.anyAuction()
-				.withEmailAuthor("gabiAvatar@Gmail.com")
+				.withEmailAuthor("pasquboca12@gmail.com")
 				.withDescription("----Set completo del avatar cubre libro 1 2 3 4 ----")
 				.withTitle("Set Avatar")
 				.withPrice(500)
@@ -357,7 +357,7 @@ public class ApplicationRestFull {
 		auctionDao.save(
 				anyBuilderAuction
 				.anyAuction()
-				.withEmailAuthor("rukia@Gmail.com")
+				.withEmailAuthor("pasquboca12@gmail.com")
 				.withDescription("-----Dragon Ball FighterZ----------")
 				.withTitle("FighterZ")
 				.withPrice(200)
@@ -381,15 +381,15 @@ public class ApplicationRestFull {
 				.withFinishDate(LocalDateTime.now().plusDays(1))
 				.withInitialFinishDate(LocalDateTime.now().plusDays(1))
 				.withPublicationDate(LocalDateTime.now().minusDays(2))
-				.withFinishDate(LocalDateTime.now().plusMinutes(7))
-				.withInitialFinishDate(LocalDateTime.now().plusMinutes(7))
-				.withFirstBidder("gabi@gmail.com",5000)
-				.withBidder("pepito")
+				.withFinishDate(LocalDateTime.now().plusMinutes(5))
+				.withInitialFinishDate(LocalDateTime.now().plusMinutes(5))
+				// .withFirstBidder("gabi@gmail.com",5000)
+				// .withBidder("pepito")
 				.get()
 		);
 		auctionDao.save(anyBuilderAuction
 				.anyAuction()
-				.withEmailAuthor("arkham@Gmail.com")
+				.withEmailAuthor("pasquboca12@gmail.com")
 				.withDescription("Batman Arkham Knight is a 2015 action-adventure video game developed by Rocksteady Studios")
 				.withTitle("Arkham Knight")
                 .withPrice(22750)
@@ -397,7 +397,6 @@ public class ApplicationRestFull {
 				.withPublicationDate(LocalDateTime.now().minusDays(2))
 				.withFinishDate(LocalDateTime.now().plusHours(10))
 				.withInitialFinishDate(LocalDateTime.now().plusHours(10))
-				.withFirstBidder("gabi@gmail.com",5000)
 				.get()
 		);
 		auctionDao.save(anyBuilderAuction
@@ -435,7 +434,7 @@ public class ApplicationRestFull {
 		auctionDao.save(
 				anyBuilderAuction
 				.anyAuction()
-				.withEmailAuthor("kakaroto@Gmail.com")
+				.withEmailAuthor("pasquboca12@gmail.com")
 				.withDescription("----Es una muñeco coleccionable----")
 				.withTitle("Goku Bampresto")
                 .withPrice(900)

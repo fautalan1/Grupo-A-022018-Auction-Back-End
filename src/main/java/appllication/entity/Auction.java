@@ -151,13 +151,13 @@ public class Auction {
 
     private boolean exceededFortyEightHours() {
         LocalDateTime fiveMinutesAfterTheFinishDate = getFinishDate().plusMinutes(5);
-        LocalDateTime initialFinishDatePlusFortyEightHours= getInitialFinishDate().plusWeeks(2);
-        return fiveMinutesAfterTheFinishDate.compareTo(initialFinishDatePlusFortyEightHours) > 0;
+        LocalDateTime initialFinishDatePlusFortyEightHours = getInitialFinishDate().plusHours(48);
+        return fiveMinutesAfterTheFinishDate.isAfter(initialFinishDatePlusFortyEightHours);
     }
 
     private boolean theOfferWasMadeWithinTheLastFiveMinutes() {
-        LocalDateTime fiveMinutesBeforeTheCurrent = LocalDateTime.now().minusMinutes(1);
-        return fiveMinutesBeforeTheCurrent.compareTo(this.finishDate) < 0;
+        LocalDateTime fiveMinutesBeforeTheCurrent = LocalDateTime.now().plusMinutes(5);
+        return this.finishDate.isAfter(LocalDateTime.now()) && this.finishDate.isBefore(fiveMinutesBeforeTheCurrent);
     }
 
     public long fivePercentMoreThanTheCurrentPrice() {
