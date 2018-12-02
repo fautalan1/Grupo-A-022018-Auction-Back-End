@@ -1,6 +1,7 @@
 package appllication.controller;
 
 import appllication.entity.Auction;
+import appllication.entity.Bidder;
 import appllication.model.RequestPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import appllication.service.AuctionService;
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 public class AuctionController {
@@ -37,6 +39,11 @@ public class AuctionController {
     @GetMapping("/auction/{emailAuthor}")
     public Auction recover(@PathVariable("emailAuthor") String emailAuthor ){
         return auctionService.recover(emailAuthor);
+    }
+
+    @GetMapping("/auction/and/bidders/{id}")
+    public Auction recoverBidders(@PathVariable("id") long id ){
+        return auctionService.recoverAuctionWithBidders(id);
     }
 
     /**********************************************************************************/

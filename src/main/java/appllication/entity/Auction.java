@@ -47,11 +47,11 @@ public class Auction {
     private List<Bidder> firstBidders;
 
     @Size(min = 5, max = 50,
-            message = " title must be between 10 and 50 characters")
+            message = " title must be between 5 and 50 characters")
     private String title;
 
-    @Size(min = 10, max = 100,
-            message = " description must be between 10 and 50 characters")
+    @Size(min = 10, max = 500,
+            message = " description must be between 10 and 500 characters")
     private String description;
     private String address;
     private String photos;

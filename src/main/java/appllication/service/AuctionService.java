@@ -2,6 +2,7 @@ package appllication.service;
 
 import appllication.annotation.LogExecutionTime;
 import appllication.entity.Auction;
+import appllication.entity.Bidder;
 import appllication.model.Exception.*;
 
 import appllication.model.RequestPage;
@@ -248,4 +249,11 @@ public class AuctionService {
                             aPage.getSize()));
     }
 
+    @LogExecutionTime
+    @Transactional
+    public Auction recoverAuctionWithBidders(long id) {
+        Auction auction = recoverById(id);
+        auction.setFirstBidders(bidderDao.findAllByFirstBidderAndAuction(true,id));
+        return auction;
+    }
 }

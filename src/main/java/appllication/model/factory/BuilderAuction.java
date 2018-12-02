@@ -75,4 +75,9 @@ public class BuilderAuction {
         return this;
     }
 
+    public BuilderAuction withFirstBidder(String aBidder, long maxAmount){
+        anyAction.firstOffer(aBidder,maxAmount);
+        return this;
+    }
+
 }
