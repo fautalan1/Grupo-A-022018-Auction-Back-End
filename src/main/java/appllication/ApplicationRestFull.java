@@ -426,9 +426,9 @@ public class ApplicationRestFull {
 				.withPublicationDate(LocalDateTime.now().minusDays(5))
 				.withFinishDate(LocalDateTime.now().minusDays(1))
 				.withInitialFinishDate(LocalDateTime.now().minusDays(1))
-						.withBidder("SEÑOR Z")
-						.withBidder("SEÑOR Y")
-						.withBidder("SEÑOR X")
+						.withBidder("SEÑORZ@gmail.com")
+						.withBidder("SEÑORY@gmail.com")
+						.withBidder("SEÑORX@gmail.com")
 						.get()
 		);
 		auctionDao.save(

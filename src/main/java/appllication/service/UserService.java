@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component("userService")
+@Transactional
 public class UserService {
 
     private final UserDao userDao;

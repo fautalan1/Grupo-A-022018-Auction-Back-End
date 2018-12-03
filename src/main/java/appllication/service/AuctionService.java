@@ -2,7 +2,6 @@ package appllication.service;
 
 import appllication.annotation.LogExecutionTime;
 import appllication.entity.Auction;
-import appllication.entity.Bidder;
 import appllication.model.Exception.*;
 
 import appllication.model.RequestPage;
@@ -26,6 +25,7 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CONFLICT;
 
 @Component("auctionService")
+@Transactional
 public class AuctionService {
 
 
@@ -38,7 +38,6 @@ public class AuctionService {
         this.bidderDao = bidderDao;
         this.auctionDao = auctionDao;
     }
-
 
     @LogExecutionTime
     @Transactional

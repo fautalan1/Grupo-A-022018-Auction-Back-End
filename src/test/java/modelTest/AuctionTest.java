@@ -4,7 +4,6 @@ import appllication.entity.Auction;
 import appllication.model.factory.AuctionFactory;
 import appllication.model.auctionState.AuctionStatus;
 
-import appllication.model.factory.UserFactory;
 import org.junit.Assert;
 
 import org.junit.Test;
