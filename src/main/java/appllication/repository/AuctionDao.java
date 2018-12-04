@@ -47,7 +47,7 @@ public interface AuctionDao extends JpaRepository<Auction, Long>{
     @Query(value = " SELECT auc FROM Auction auc where auc.id IN (SELECT b.auction.id FROM Bidder b where b.author = :userName)")
     Page<Auction> findAllByUserParticipate(@Param("userName") String userName, Pageable pageable);
 
-    @Query(value = " SELECT auc FROM Auction auc where auc.id IN (SELECT b.auction.id FROM Bidder b where b.author = :oneUserName or b.author = :twoUserName or b.author = :threeUserName  )")
+    @Query(value = " SELECT auc FROM Auction auc where auc.emailAuthor IN (SELECT b.author FROM Bidder b where b.author = :oneUserName or b.author = :twoUserName or b.author = :threeUserName  )")
     Page<Auction> searchUsersParticipate(@Param("oneUserName")   String oneUserName,
                                          @Param("twoUserName")   String twoUserName,
                                          @Param("threeUserName") String threeUserName, Pageable pageable);
