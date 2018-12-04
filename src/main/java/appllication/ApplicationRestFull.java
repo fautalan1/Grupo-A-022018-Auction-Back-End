@@ -69,7 +69,7 @@ public class ApplicationRestFull {
 				.withDescription("----Waifusssssssssssss japonesa 100% original no fake----")
 				.withTitle("Waifu")
 				.withPrice(50)
-				.withPublicationDate(LocalDateTime.now().plusHours(1))
+				.withPublicationDate(LocalDateTime.now().plusMinutes(7))
                 .withFinishDate(LocalDateTime.now().plusDays(3))
                 .withInitialFinishDate(LocalDateTime.now().plusDays(3))
                 .withPhoto("https://www.heypoorplayer.com/wp-content/uploads/2018/02/Segment_0001.jpg")
@@ -91,7 +91,7 @@ public class ApplicationRestFull {
 		auctionDao.save(
 				anyBuilderAuction
 						.anyAuction()
-						.withEmailAuthor("ZERO@Gmail.com")
+						.withEmailAuthor("gabi@gmail.com")
 						.withTitle("Black Zero Figure ")
 						.withDescription("-Purple slashing sword effect part\n" +
 										" -Interchangeable hands and faces\n" +
@@ -226,8 +226,8 @@ public class ApplicationRestFull {
 								"-major producing countries: China  " )
 						.withPrice(1500)
 						.withPublicationDate(LocalDateTime.now().minusDays(2))
-						.withFinishDate(LocalDateTime.now().plusMinutes(17))
-						.withInitialFinishDate(LocalDateTime.now().plusMinutes(17))
+						.withFinishDate(LocalDateTime.now().plusMinutes(8))
+						.withInitialFinishDate(LocalDateTime.now().plusMinutes(8))
 						.withPhoto("https://images-na.ssl-images-amazon.com/images/I/419bmZqq0OL.jpg")
 						.withFirstBidder("gabi@gmail.com",5000)
 						.withBidder("victor@gmail.com")
@@ -248,8 +248,8 @@ public class ApplicationRestFull {
 								"-Delivery time is 14-28days normally. If delay shipping is occured, we provide discount as case.  " )
 						.withPrice(20)
 						.withPublicationDate(LocalDateTime.now().minusDays(2))
-						.withFinishDate(LocalDateTime.now().plusMinutes(17))
-						.withInitialFinishDate(LocalDateTime.now().plusMinutes(17))
+						.withFinishDate(LocalDateTime.now().plusMinutes(7))
+						.withInitialFinishDate(LocalDateTime.now().plusMinutes(7))
 						.withPhoto("https://images-na.ssl-images-amazon.com/images/I/413qylCebbL.jpg")
 						.withFirstBidder("gabi@gmail.com",5000)
 						.withBidder("n.autalan@gmail.com")
@@ -323,7 +323,7 @@ public class ApplicationRestFull {
 		auctionDao.save(
 				anyBuilderAuction
 						.anyAuction()
-						.withEmailAuthor("leon@gmail.com")
+						.withEmailAuthor("pasquboca12@gmail.com")
 						.withTitle("Leon Figure ")
 						.withDescription(" " +
 								"-Parallel import goods\n" +
@@ -333,8 +333,8 @@ public class ApplicationRestFull {
 								"-(C) CAPCOM CO.LTD. 2012 ALL RIGHTS RESERVED." )
 						.withPrice(1750)
 						.withPublicationDate(LocalDateTime.now().minusDays(2))
-						.withFinishDate(LocalDateTime.now().plusMinutes(17))
-						.withInitialFinishDate(LocalDateTime.now().plusMinutes(17))
+						.withFinishDate(LocalDateTime.now().plusMinutes(7))
+						.withInitialFinishDate(LocalDateTime.now().plusMinutes(7))
 						.withPhoto("https://images-na.ssl-images-amazon.com/images/I/414Y8zSsOlL.jpg")
 						.withFirstBidder("gabi@gmail.com",5000)
 						.get()
@@ -372,7 +372,7 @@ public class ApplicationRestFull {
 		);
 		auctionDao.save(anyBuilderAuction
 				.anyAuction()
-				.withEmailAuthor("waifu@Gmail.com")
+				.withEmailAuthor("gabi@gmail.com")
 				.withDescription("---------Manga Dragon Ball--------------------")
 				.withTitle("Manga Dragon Ball")
                 .withPrice(100)
@@ -395,8 +395,8 @@ public class ApplicationRestFull {
                 .withPrice(22750)
                 .withPhoto("https://www.gamepur.com/files/images/2015/batman-arkham-knight-ps4-limited-edition.jpg")
 				.withPublicationDate(LocalDateTime.now().minusDays(2))
-				.withFinishDate(LocalDateTime.now().plusHours(10))
-				.withInitialFinishDate(LocalDateTime.now().plusHours(10))
+				.withFinishDate(LocalDateTime.now().plusMinutes(8))
+				.withInitialFinishDate(LocalDateTime.now().plusMinutes(8))
 				.get()
 		);
 		auctionDao.save(anyBuilderAuction
@@ -418,14 +418,14 @@ public class ApplicationRestFull {
 		auctionDao.save(
 				anyBuilderAuction
 				.anyAuction()
-				.withEmailAuthor("lolo@Gmail.com")
+				.withEmailAuthor("gabi@gmail.com")
 				.withDescription("------- --------- Villanos Dragon Ball Super ---------- --------")
 				.withTitle("Villanos DBS")
                 .withPrice(300)
                 .withPhoto("https://image.jimcdn.com/app/cms/image/transf/dimension=890x10000:format=png/path/s81b4791a1b7c63fb/image/i86c58e3ebe0dfc3b/version/1535480861/image.png")
 				.withPublicationDate(LocalDateTime.now().minusDays(5))
-				.withFinishDate(LocalDateTime.now().minusDays(1))
-				.withInitialFinishDate(LocalDateTime.now().minusDays(1))
+				.withFinishDate(LocalDateTime.now().minusMinutes(8))
+				.withInitialFinishDate(LocalDateTime.now().minusMinutes(8))
 						.withBidder("SEÑORZ@gmail.com")
 						.withBidder("SEÑORY@gmail.com")
 						.withBidder("SEÑORX@gmail.com")
@@ -440,8 +440,8 @@ public class ApplicationRestFull {
                 .withPrice(900)
                 .withPhoto("https://www.ninoma.com/media/catalog/product/cache/2/image/02067325ba47ad6dbc32075e74e23f9c/n/e/new_goku_1.jpg")
 				.withPublicationDate(LocalDateTime.now().minusDays(5))
-				.withFinishDate(LocalDateTime.now().minusDays(1))
-				.withInitialFinishDate(LocalDateTime.now().minusDays(1))
+				.withFinishDate(LocalDateTime.now().minusMinutes(8))
+				.withInitialFinishDate(LocalDateTime.now().minusMinutes(8))
 				.get()
 		);
 
