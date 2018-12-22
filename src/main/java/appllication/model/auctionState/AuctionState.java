@@ -1,6 +1,6 @@
-package model;
+package appllication.model.auctionState;
 
-import entity.Auction;
+import appllication.entity.Auction;
 
 public interface AuctionState {
 
